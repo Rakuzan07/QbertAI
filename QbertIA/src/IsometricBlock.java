@@ -3,15 +3,10 @@ public class IsometricBlock extends Element {
 	
 	IsometricBlock[] adiacent=new IsometricBlock[4];
 	
-	public IsometricBlock(Position p) {
-		position=new Position(p);
+	public IsometricBlock() {
 		visited=false;
 	}
 	
-	public IsometricBlock(int cordX , int cordY) {
-		position=new Position(cordX,cordY);
-		visited=false;
-	}
 	
 	public void setVisited(boolean visited) {
 		this.visited=visited;
@@ -21,13 +16,7 @@ public class IsometricBlock extends Element {
 		return visited;
 	}
 	
-	public void setPosition(int cordX , int cordY) {
-		position=new Position(cordX , cordY);
-	}
-	
-	public void setPosition(Position p) {
-		position=new Position(p);
-	}
+
 	
 	public void addAdiacentUpRight(IsometricBlock ib) {
 		/*LA POSIZIONE 0 DELL'ARRAY DELLE ADIACENZE 

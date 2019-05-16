@@ -60,4 +60,23 @@ public class World {
 
         }
     }
+    
+    public String toString() {
+    	String s="";
+    	for (int i=0;i<isometricBlockNumber;i++) {
+    		s="Blocco "+i+" adiacenti :/n";
+    		IsometricBlock[] adiacenti=blocks[i].getAdiacent();
+    		for(int j=0;j<adiacenti.length;j++) {
+    			if(adiacenti[j]!=null) s+="Blocco "+posIsometricBlock(adiacenti[j])+" /n";
+    		}
+    	}
+    	return s;
+    }
+    
+    public int posIsometricBlock(IsometricBlock s) {
+    	for(int i=0;i<isometricBlockNumber;i++) {
+    		if(s==blocks[i]) return i;
+    	}
+    	return -1;
+    }
 }

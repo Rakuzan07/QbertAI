@@ -7,6 +7,9 @@ public class IsometricBlock extends Element {
 		visited=false;
 	}
 	
+	public IsometricBlock[] getAdiacent() {
+		return adiacent;
+	}
 	
 	public void setVisited(boolean visited) {
 		this.visited=visited;
@@ -16,7 +19,7 @@ public class IsometricBlock extends Element {
 		return visited;
 	}
 	
-
+    
 	
 	public void addAdiacentUpRight(IsometricBlock ib) {
 		/*LA POSIZIONE 0 DELL'ARRAY DELLE ADIACENZE 

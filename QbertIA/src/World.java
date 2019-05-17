@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 public class World {
 
-    private int isometricBlockNumber = 25;
+    private int isometricBlockNumber = 28;
     private int blockLevels = 7;
     private IsometricBlock[] blocks;
 
@@ -20,10 +20,16 @@ public class World {
 
     private int findBlockLevel(int blockNumber){
 
+        if(blockNumber < 0)
+            return -1;
+
+        if(blockNumber == 0)
+            return 1;
+
         int maxLevelIndex = 0;
         int previousLevelMaxIndex = 0;
 
-        for (int i = 1; i <= blockLevels; i++) {
+        for (int i = 2; i <= blockLevels; i++) {
             maxLevelIndex = i + previousLevelMaxIndex;
             previousLevelMaxIndex = maxLevelIndex;
 
@@ -36,6 +42,7 @@ public class World {
 
     private void fillIsometricBlocks(){
         for (int i = 0; i < isometricBlockNumber; i++) {
+
             int blockLevel = findBlockLevel(i);
             int upLeftBlock = i - blockLevel;
             int upRightLevel = upLeftBlock + 1;
@@ -64,15 +71,18 @@ public class World {
     public String toString() {
     	String s="";
     	for (int i=0;i<isometricBlockNumber;i++) {
-    		s="Blocco "+i+" adiacenti :/n";
+    		s +="Blocco "+i+" adiacenti :\n";
     		IsometricBlock[] adiacenti=blocks[i].getAdiacent();
     		for(int j=0;j<adiacenti.length;j++) {
-    			if(adiacenti[j]!=null) s+="Blocco "+posIsometricBlock(adiacenti[j])+" /n";
+    		    if(adiacenti[j] != null)
+    		    s+="Blocco "+posIsometricBlock(adiacenti[j])+" \n";
     		}
+
+    		s += "\n";
     	}
     	return s;
     }
-    
+
     public int posIsometricBlock(IsometricBlock s) {
     	for(int i=0;i<isometricBlockNumber;i++) {
     		if(s==blocks[i]) return i;

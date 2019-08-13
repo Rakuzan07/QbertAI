@@ -89,4 +89,8 @@ public class World {
     	}
     	return -1;
     }
+    
+    public IsometricBlock getBlock(int index) {
+    	return blocks[index];
+    }
 }

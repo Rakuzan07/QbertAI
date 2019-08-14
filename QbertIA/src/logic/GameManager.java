@@ -1,3 +1,4 @@
+package logic;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,12 +9,30 @@ public class GameManager {
 	
 	private Player qbert;
 	private World world;
-	HashMap<Player,IsometricBlock> position=new HashMap<Player,IsometricBlock>();
+	private HashMap<Player,IsometricBlock> position=new HashMap<Player,IsometricBlock>();
+	private int level , round ;
 	
 	public GameManager() {
 		world=new World();
 		qbert=new Player();
 		position.put(qbert, world.getBlock(0));
+		level=1;
+		round=1;
+	}
+	
+	public int getNumLevel() {
+         return world.getNumLevel();
+	}
+	
+	public int getLevel() {
+		return level;
+	}
+	
+	public int getRound() {
+		return round;
 	}
 
+	public int getQbertLife() {
+		return qbert.getLife();
+	}
 }

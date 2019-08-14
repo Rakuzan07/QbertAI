@@ -1,3 +1,4 @@
+package logic;
 import java.util.HashMap;
 
 public class World {
@@ -93,4 +94,9 @@ public class World {
     public IsometricBlock getBlock(int index) {
     	return blocks[index];
     }
+    
+    public int getNumLevel() {
+    	return blockLevels;
+    }
+    
 }

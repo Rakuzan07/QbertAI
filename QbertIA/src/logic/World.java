@@ -99,4 +99,10 @@ public class World {
     	return blockLevels;
     }
     
+    public int blockIndex(IsometricBlock ib) {
+    	for(int i=0;i<isometricBlockNumber;i++) {
+    		if (ib==blocks[i]) return i;
+    	}
+    	return -1;
+    }
 }

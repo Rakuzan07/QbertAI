@@ -45,5 +45,20 @@ public class IsometricBlock extends Element {
 		adiacent[3]=ib;
 	}
 	
+	public IsometricBlock getAdiacentUpRight() {
+		return adiacent[0];
+	}
+	
+	public IsometricBlock getAdiacentUpLeft() {
+		return adiacent[1];
+	}
+	
+	public IsometricBlock getAdiacentDownRight() {
+		return adiacent[2];
+	}
+	
+	public IsometricBlock getAdiacentDownLeft() {
+		return adiacent[3];
+	}
 
 }

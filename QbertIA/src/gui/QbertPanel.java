@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
@@ -18,7 +19,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 
 	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1;
 	private int screenStatus;
-	private boolean first=true;
+	private boolean first=true , start=true ;
 	private Toolkit tk = Toolkit.getDefaultToolkit();
 	private Image demoScreenBackground;
 	private ArrayList<Image> pressAnyKey = new ArrayList<Image>();
@@ -28,7 +29,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 	private GameManager gm;
 	private int initialQbertIndex;
 	private ArrayList<Position> blockPosition = new ArrayList<Position>();
-
+    private Position qbertPosition;
+    
 	public QbertPanel() {
 		screenStatus = DEMO_SCREEN;
 		demoScreenBackground = tk.getImage(this.getClass().getResource("resources//demo//QbertRebooted.jpg"));
@@ -84,23 +86,29 @@ public class QbertPanel extends JPanel implements KeyListener {
 		int originx = 600;
 		int originy = 250;
 		int numBlock = 1;
+		int contBlock=0;
 		for (int i = 0; i < gm.getNumLevel(); i++) {
 			for (int j = 0; j < numBlock; j++) {
 				if (numBlock == 1) {
-					g.drawImage(block, originx, originy, this);
+					if(!gm.isVisited(contBlock))g.drawImage(block, originx, originy, this);
+					if(gm.isVisited(contBlock))g.drawImage(blockc, originx, originy, this);
 					if(first)blockPosition.add(new Position(originx, originy));
 				} else {
 					if (j == 0) {
 						originx = originx - 16;
 						originy = originy + 24;
 					}
-					g.drawImage(block, originx + (j * 32), originy, this);
+					if(!gm.isVisited(contBlock))g.drawImage(block, originx + (j * 32), originy, this);
+					if(gm.isVisited(contBlock))g.drawImage(blockc, originx + (j * 32), originy, this);
 					if(first)blockPosition.add(new Position(originx + (j * 32), originy));
 				}
+				contBlock++;
 			}
-			first=false;
+
 			numBlock = numBlock + 1;
 		}
+		if(first) qbertPosition=new Position(blockPosition.get(initialQbertIndex).getX(),blockPosition.get(initialQbertIndex).getY());
+		first=false;
 		drawPlayer(g);
 	}
 
@@ -128,17 +136,52 @@ public class QbertPanel extends JPanel implements KeyListener {
 	    u_left.add(tk.getImage(this.getClass().getResource("resources//play//q4.png")));
 	    u_right.add(tk.getImage(this.getClass().getResource("resources//play//q1.png")));
 	    u_right.add(tk.getImage(this.getClass().getResource("resources//play//q2.png")));
+	    blockc=(tk.getImage(this.getClass().getResource("resources//play//block2.png")));
 	    screenStatus = PLAY_SCREEN;
 
 	}
 	
 	private void drawPlayer(Graphics g) {
 		if(initialQbertIndex==gm.posQbert()) {
-			g.drawImage(getQbertImage(SITTED),blockPosition.get(initialQbertIndex).getX()+8 , blockPosition.get(initialQbertIndex).getY()-4,this);
+			if(start) { g.drawImage(getQbertImage(LIFTED_UP),blockPosition.get(initialQbertIndex).getX()+8 , blockPosition.get(initialQbertIndex).getY()-4,this);}
+			else  g.drawImage(getQbertImage(SITTED),blockPosition.get(initialQbertIndex).getX()+8 , blockPosition.get(initialQbertIndex).getY()-4,this);
+			gm.setBlockVisited(initialQbertIndex);
+			Random r=new Random();
+			if(r.nextInt()%10<2)gm.goDownLeft();
+			else if (r.nextInt()%10<5)gm.goDownRight();
+			else if (r.nextInt()%10<7)gm.goUpRight();
+			else gm.goUpLeft();
+		}
+		else {
+				start=false;
+				if(gm.getPlayerStatus()==Player.Status.D_LEFT) {
+					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8) qbertPosition.setX(qbertPosition.getX()-1);
+					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4) qbertPosition.setY(qbertPosition.getY()+1);
+					g.drawImage(getQbertImage(LIFTED_UP),qbertPosition.getX()-1, qbertPosition.getY()-1,this);
+					if(blockPosition.get(gm.posQbert()).getX()+8==qbertPosition.getX() && blockPosition.get(gm.posQbert()).getY()-4==qbertPosition.getY() ) initialQbertIndex=gm.posQbert();
+				}
+				if(gm.getPlayerStatus()==Player.Status.D_RIGHT) {
+					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8) qbertPosition.setX(qbertPosition.getX()+1);
+					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4) qbertPosition.setY(qbertPosition.getY()+1);
+					g.drawImage(getQbertImage(LIFTED_UP),qbertPosition.getX()-1, qbertPosition.getY()-1,this);
+					if(blockPosition.get(gm.posQbert()).getX()+8==qbertPosition.getX() && blockPosition.get(gm.posQbert()).getY()-4==qbertPosition.getY() ) initialQbertIndex=gm.posQbert();
+				}
+				if(gm.getPlayerStatus()==Player.Status.U_RIGHT) {
+					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8) qbertPosition.setX(qbertPosition.getX()+1);
+					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4) qbertPosition.setY(qbertPosition.getY()-1);
+					g.drawImage(getQbertImage(LIFTED_UP),qbertPosition.getX()-1, qbertPosition.getY()-1,this);
+					if(blockPosition.get(gm.posQbert()).getX()+8==qbertPosition.getX() && blockPosition.get(gm.posQbert()).getY()-4==qbertPosition.getY() ) initialQbertIndex=gm.posQbert();
+				}
+				if(gm.getPlayerStatus()==Player.Status.U_LEFT) {
+					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8) qbertPosition.setX(qbertPosition.getX()-1);
+					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4) qbertPosition.setY(qbertPosition.getY()-1);
+					g.drawImage(getQbertImage(LIFTED_UP),qbertPosition.getX()-1, qbertPosition.getY()-1,this);
+					if(blockPosition.get(gm.posQbert()).getX()+8==qbertPosition.getX() && blockPosition.get(gm.posQbert()).getY()-4==qbertPosition.getY() ) initialQbertIndex=gm.posQbert();
+				}
+				}
+			
 		}
 		
-		
-	}
 	
 	private Image getQbertImage(int index) {
 		if(gm.getPlayerStatus()==Player.Status.D_LEFT) {

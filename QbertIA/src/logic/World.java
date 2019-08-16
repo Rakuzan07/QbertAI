@@ -105,4 +105,14 @@ public class World {
     	}
     	return -1;
     }
+    
+    public void setVisited(int index) {
+    	blocks[index].setVisited(true);
+    }
+    
+    public boolean isVisited(int index) {
+    	return blocks[index].isVisited(); 
+    }
+    
+   
 }

@@ -22,6 +22,10 @@ public class GameManager {
 		round=1;
 	}
 	
+	public void setBlockVisited(int index) {
+		world.setVisited(index);
+	}
+	
 	public int getNumLevel() {
          return world.getNumLevel();
 	}
@@ -81,4 +85,10 @@ public class GameManager {
 	public Status getPlayerStatus() {
 		return qbert.getState();
 	}
+	
+	
+	public boolean isVisited(int index) {
+		return world.isVisited(index);
+	}
+
 }

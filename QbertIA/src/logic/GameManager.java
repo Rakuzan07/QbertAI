@@ -1,7 +1,13 @@
 package logic;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import it.unical.mat.embasp.languages.IllegalAnnotationException;
+import it.unical.mat.embasp.languages.ObjectNotValidException;
+import it.unical.mat.embasp.languages.asp.ASPMapper;
+import it.unical.mat.embasp.languages.asp.AnswerSet;
 import logic.Player.Status;
 
 public class GameManager {
@@ -12,6 +18,7 @@ public class GameManager {
 	private Player qbert;
 	private World world;
 	private HashMap<Player,IsometricBlock> position=new HashMap<Player,IsometricBlock>();
+	private ASPConnector blocksPaths;
 	private int level , round ;
 	
 	public GameManager() {
@@ -20,6 +27,7 @@ public class GameManager {
 		position.put(qbert, world.getBlock(0));
 		level=1;
 		round=1;
+		blocksPaths = new ASPConnector("QbertIA/src/encodings/isometricdistance");
 	}
 	
 	public void setBlockVisited(int index) {
@@ -84,6 +92,42 @@ public class GameManager {
 	
 	public Status getPlayerStatus() {
 		return qbert.getState();
+	}
+
+	public void fillAdjacentBlocks(){
+		
+		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
+			IsometricBlock[] adjacents = world.getBlock(i).getAdiacent();
+			for (int j = 0; j < adjacents.length; j++) {
+				if(adjacents[j] != null) {
+					blocksPaths.putFact(new AdjacentBlocks(i, world.blockIndex(adjacents[j])));
+				}
+			}
+		}
+	}
+
+	public void computeBlocksPaths(){
+
+		try {
+			ASPMapper.getInstance().registerClass(BlocksPath.class);
+		} catch (IllegalAnnotationException | ObjectNotValidException e) {
+			e.printStackTrace();
+		}
+
+		List<AnswerSet> answerSetList = blocksPaths.startSync();
+		System.out.println(answerSetList.size());
+		for (AnswerSet answerSet : answerSetList) {
+			try {
+				for (Object o : answerSet.getAtoms()) {
+					if(o instanceof BlocksPath){
+						BlocksPath blocksPath = (BlocksPath) o;
+						System.out.println(blocksPath);
+					}
+				}
+			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	

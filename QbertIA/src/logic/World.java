@@ -112,6 +112,8 @@ public class World {
     public boolean isVisited(int index) {
     	return blocks[index].isVisited(); 
     }
-    
-   
+
+    public int getIsometricBlockNumber() {
+        return isometricBlockNumber;
+    }
 }

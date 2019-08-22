@@ -44,6 +44,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 		initialQbertIndex=gm.posQbert();
 		Sketcher sk = new Sketcher();
 		new Thread(sk).start();
+		gm.fillAdjacentBlocks();
+		gm.computeBlocksPaths();
 	}
 
 	public void paintComponent(Graphics g) {

@@ -1,2 +1,2 @@
-pathSize(X, Y, Z) :- isAdiacent(X, Y), Z = 1.
-pathSize(X, Y, Z) :- pathSize(X, A, B), isAdiacent(A, Y), Z = B + 1.
+pathSize(X, Y, Z) :- isAdjacent(X, Y), Z = 1.
+pathSize(X, Y, Z) :- pathSize(X, A, B), isAdjacent(A, Y), Z = B + 1.

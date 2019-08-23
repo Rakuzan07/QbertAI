@@ -1,0 +1,20 @@
+directTarget(X) :- actualPosition(Y), isAdjacent(Y, X), not enemy(X), not painted(X).
+notReached(Y) :- isometricBlock(Y), directTarget(X).
+reached(Y, G) :- reached(X, Z), isAdjacent(X, Y), not enemy(Y), G = Z + 1.
+reached(Y, Z) :- actualPosition(X), isAdjacent(X, Y), not enemy(Y), not notReached(Y), Z = 1.
+isTarget(X) | isNotTarget(X) :- reached(X, Y).
+:- #count{X : isTarget(X)} = G, #count{X : directTarget(X)} = B, G + B != 1.
+:- isTarget(X), painted(X).
+:~ isTarget(X), reached(X, Y). [Y@1, X]
+
+isAdjacent(0, 1).
+isAdjacent(0, 2).
+isAdjacent(1, 3).
+isAdjacent(2, 3).
+actualPosition(0).
+isometricBlock(0).
+isometricBlock(1).
+isometricBlock(2).
+isometricBlock(3).
+painted(1).
+enemy(2).

@@ -33,4 +33,9 @@ public class AdjacentBlocks {
     public void setSecondBlockIndex(int secondBlockIndex) {
         this.secondBlockIndex = secondBlockIndex;
     }
+
+    @Override
+    public String toString() {
+        return "isAdjacent(" + firstBlockIndex + ", " + secondBlockIndex + ").";
+    }
 }

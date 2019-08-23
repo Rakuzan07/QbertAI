@@ -1,4 +1,5 @@
 package logic;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +28,8 @@ public class GameManager {
 		position.put(qbert, world.getBlock(0));
 		level=1;
 		round=1;
-		blocksPaths = new ASPConnector("QbertIA/src/encodings/isometricdistance");
+		blocksPaths = new ASPConnector("QbertIA" + File.separator + "src" + File.separator +
+				"encodings" + File.separator + "computetarget");
 	}
 	
 	public void setBlockVisited(int index) {
@@ -119,9 +121,9 @@ public class GameManager {
 		for (AnswerSet answerSet : answerSetList) {
 			try {
 				for (Object o : answerSet.getAtoms()) {
-					if(o instanceof BlocksPath){
-						BlocksPath blocksPath = (BlocksPath) o;
-						System.out.println(blocksPath);
+					if(o instanceof AdjacentBlocks){
+						AdjacentBlocks adjacentBlocks = (AdjacentBlocks) o;
+						System.out.println(adjacentBlocks);
 					}
 				}
 			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {

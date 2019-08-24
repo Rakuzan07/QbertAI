@@ -1,7 +1,6 @@
 package logic;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class GameManager {
 	private Player qbert;
 	private World world;
 	private HashMap<Player,IsometricBlock> position=new HashMap<Player,IsometricBlock>();
-	private ASPConnector blocksPaths;
+	private ASPConnector findTarget;
 	private int level , round ;
 	
 	public GameManager() {
@@ -28,7 +27,7 @@ public class GameManager {
 		position.put(qbert, world.getBlock(0));
 		level=1;
 		round=1;
-		blocksPaths = new ASPConnector("QbertIA" + File.separator + "src" + File.separator +
+		findTarget = new ASPConnector("QbertIA" + File.separator + "src" + File.separator +
 				"encodings" + File.separator + "computetarget");
 	}
 	
@@ -97,12 +96,18 @@ public class GameManager {
 	}
 
 	public void fillAdjacentBlocks(){
+
+		findTarget.putFact("actualPosition(0).");
+
+		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
+			findTarget.putFact(world.getBlock(i));
+		}
 		
 		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
 			IsometricBlock[] adjacents = world.getBlock(i).getAdiacent();
 			for (int j = 0; j < adjacents.length; j++) {
 				if(adjacents[j] != null) {
-					blocksPaths.putFact(new AdjacentBlocks(i, world.blockIndex(adjacents[j])));
+					findTarget.putFact(new AdjacentBlocks(i, adjacents[j].getId()));
 				}
 			}
 		}
@@ -111,19 +116,19 @@ public class GameManager {
 	public void computeBlocksPaths(){
 
 		try {
-			ASPMapper.getInstance().registerClass(BlocksPath.class);
+			ASPMapper.getInstance().registerClass(Target.class);
 		} catch (IllegalAnnotationException | ObjectNotValidException e) {
 			e.printStackTrace();
 		}
 
-		List<AnswerSet> answerSetList = blocksPaths.startSync();
+		List<AnswerSet> answerSetList = findTarget.startSync();
 		System.out.println(answerSetList.size());
 		for (AnswerSet answerSet : answerSetList) {
 			try {
 				for (Object o : answerSet.getAtoms()) {
-					if(o instanceof AdjacentBlocks){
-						AdjacentBlocks adjacentBlocks = (AdjacentBlocks) o;
-						System.out.println(adjacentBlocks);
+					if(o instanceof Target){
+						Target target = (Target) o;
+						System.out.println(target);
 					}
 				}
 			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {

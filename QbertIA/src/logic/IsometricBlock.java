@@ -1,7 +1,14 @@
 package logic;
 
+import it.unical.mat.embasp.languages.Id;
+import it.unical.mat.embasp.languages.Param;
+
+@Id("isometricBlock")
 public class IsometricBlock extends Element {
-	
+
+	@Param(0)
+	private int id;
+
 	IsometricBlock[] adiacent=new IsometricBlock[4];
 	
 	public IsometricBlock() {
@@ -61,4 +68,11 @@ public class IsometricBlock extends Element {
 		return adiacent[3];
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }

@@ -35,6 +35,10 @@ public class ASPConnector {
         }
     }
 
+    public void putFact(String fact){
+        facts.addProgram(fact);
+    }
+
     public List<AnswerSet> startSync(){
         handler.addProgram(facts);
         handler.addProgram(logicProgram);

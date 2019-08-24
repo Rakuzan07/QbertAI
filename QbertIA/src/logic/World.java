@@ -10,11 +10,18 @@ public class World {
         blocks = new IsometricBlock[isometricBlockNumber];
         createBlocks();
         fillIsometricBlocks();
+        assignBlocksId();
     }
 
     private void createBlocks(){
         for (int i = 0; i < isometricBlockNumber; i++) {
             blocks[i] = new IsometricBlock();
+        }
+    }
+
+    private void assignBlocksId(){
+        for (int i = 0; i < isometricBlockNumber; i++) {
+            blocks[i].setId(i);
         }
     }
 

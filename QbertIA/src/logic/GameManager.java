@@ -103,7 +103,12 @@ public class GameManager {
 	public void putFactsToComputeTargets(){
         int blockpos= world.blockIndex(position.get(qbert));
 		findTarget.putFact("actualPosition("+blockpos+").");
-
+        
+		for(Player p: position.keySet()) {
+		   if(p!=qbert)blockpos= world.blockIndex(position.get(p));
+		   findTarget.putFact("enemy("+blockpos+").");
+		}
+		findTarget.putFact("actualPosition("+blockpos+").");
 		for (int i = 0; i < World.NUM_ELEVATOR; i++) {
 			findTarget.putFact("elevator(" + world.getElevatorAdiacent(i) + ").");
 		}

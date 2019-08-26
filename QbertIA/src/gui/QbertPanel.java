@@ -148,11 +148,12 @@ public class QbertPanel extends JPanel implements KeyListener {
 			if(start) { g.drawImage(getQbertImage(LIFTED_UP),blockPosition.get(initialQbertIndex).getX()+8 , blockPosition.get(initialQbertIndex).getY()-4,this);}
 			else  g.drawImage(getQbertImage(SITTED),blockPosition.get(initialQbertIndex).getX()+8 , blockPosition.get(initialQbertIndex).getY()-4,this);
 			gm.setBlockVisited(initialQbertIndex);
-			Random r=new Random();
+			gm.computeBlocksPaths();
+			/*Random r=new Random();
 			if(r.nextInt()%10<2)gm.goDownLeft();
 			else if (r.nextInt()%10<5)gm.goDownRight();
 			else if (r.nextInt()%10<7)gm.goUpRight();
-			else gm.goUpLeft();
+			else gm.goUpLeft();*/
 		}
 		else {
 				start=false;

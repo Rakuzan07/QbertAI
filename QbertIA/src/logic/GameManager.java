@@ -174,7 +174,7 @@ public class GameManager {
 		}
 	}
 
-	public void computeBlocksPaths(){
+	public int computeBlocksPaths(){
 
 		try {
 			ASPMapper.getInstance().registerClass(PositionToTake.class);
@@ -190,12 +190,25 @@ public class GameManager {
 					if(o instanceof PositionToTake){
 						PositionToTake target = (PositionToTake) o;
 						System.out.println(target);
+						if(target.equals("UL")) {
+							return goUpLeft();
+						}
+						else if(target.equals("UR")) {
+							return goUpRight();
+						}
+						else if(target.equals("DR")) {
+							return goDownRight();
+						}
+						else {
+							return goDownLeft();
+						}
 					}
 				}
 			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
 				e.printStackTrace();
 			}
 		}
+		return -1;
 	}
 	
 	

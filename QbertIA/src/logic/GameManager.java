@@ -190,13 +190,13 @@ public class GameManager {
 					if(o instanceof PositionToTake){
 						PositionToTake target = (PositionToTake) o;
 						System.out.println(target);
-						if(target.toString().equals("UL")) {
+						if(target.toString().contains("UL")) {
 							return goUpLeft();
 						}
-						else if(target.toString().equals("UR")) {
+						else if(target.toString().contains("UR")) {
 							return goUpRight();
 						}
-						else if(target.toString().equals("DR")) {
+						else if(target.toString().contains("DR")) {
 							return goDownRight();
 						}
 						else {

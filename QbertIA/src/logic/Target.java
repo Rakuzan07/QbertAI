@@ -9,7 +9,7 @@ public class Target {
     @Param(0)
     private int isometricBlockId;
 
-    public Target(int id, int cost){
+    public Target(int id){
         isometricBlockId = id;
     }
 

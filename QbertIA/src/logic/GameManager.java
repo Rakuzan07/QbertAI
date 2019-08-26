@@ -125,31 +125,51 @@ public class GameManager {
 	}
 
 	public void putFactsToComputeTargets(){
-        int blockpos= world.blockIndex(position.get(qbert));
+
+		int blockpos= world.blockIndex(position.get(qbert));
 		findTarget.putFact("actualPosition("+blockpos+").");
-        
-		for(Player p: position.keySet()) {
-		   if(p!=qbert)blockpos= world.blockIndex(position.get(p));
-		   findTarget.putFact("enemy("+blockpos+").");
+
+		for(Player p: position.keySet())  {
+			if(p!=qbert) {
+				blockpos = world.blockIndex(position.get(p));
+				findTarget.putFact("enemy("+blockpos+").");
+			}
 		}
-		findTarget.putFact("actualPosition("+blockpos+").");
+
+		findTarget.putFact("painted(0).");
+
 		for (int i = 0; i < World.NUM_ELEVATOR; i++) {
-			findTarget.putFact("elevator(" + world.getElevatorAdiacent(i) + ").");
+			int elevatorAdiacent = world.getElevatorAdiacent(i);
+			if(world.getBlock(elevatorAdiacent).getAdiacentUpRight() == null)
+				findTarget.putFact("elevator(" + elevatorAdiacent + ", UR).");
+			else
+				findTarget.putFact("elevator(" + elevatorAdiacent + ", UL).");
 		}
-		
+
 		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
 			if(world.isVisited(i))findTarget.putFact("painted("+i+")");
 		}
+
 		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
 			findTarget.putFact(world.getBlock(i));
 		}
-		
+
 		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
-			IsometricBlock[] adjacents = world.getBlock(i).getAdiacent();
-			for (int j = 0; j < adjacents.length; j++) {
-				if(adjacents[j] != null) {
-					findTarget.putFact(new AdjacentBlocks(i, adjacents[j].getId()));
-				}
+
+			if(world.getBlock(i).getAdiacentDownLeft() != null) {
+				findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownLeft().getId(), "DL"));
+			}
+
+			if(world.getBlock(i).getAdiacentDownRight() != null) {
+				findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownRight().getId(), "DR"));
+			}
+
+			if(world.getBlock(i).getAdiacentUpLeft() != null) {
+				findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpLeft().getId(), "UL"));
+			}
+
+			if(world.getBlock(i).getAdiacentUpRight() != null) {
+				findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpRight().getId(), "UR"));
 			}
 		}
 	}
@@ -157,7 +177,7 @@ public class GameManager {
 	public void computeBlocksPaths(){
 
 		try {
-			ASPMapper.getInstance().registerClass(Target.class);
+			ASPMapper.getInstance().registerClass(PositionToTake.class);
 		} catch (IllegalAnnotationException | ObjectNotValidException e) {
 			e.printStackTrace();
 		}
@@ -167,8 +187,8 @@ public class GameManager {
 		for (AnswerSet answerSet : answerSetList) {
 			try {
 				for (Object o : answerSet.getAtoms()) {
-					if(o instanceof Target){
-						Target target = (Target) o;
+					if(o instanceof PositionToTake){
+						PositionToTake target = (PositionToTake) o;
 						System.out.println(target);
 					}
 				}

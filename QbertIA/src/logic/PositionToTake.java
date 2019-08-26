@@ -24,6 +24,6 @@ public class PositionToTake {
 
     @Override
     public String toString() {
-        return "PositionToTake(" + position + ").";
+        return ""+position+"";
     }
 }

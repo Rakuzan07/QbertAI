@@ -1,9 +1,9 @@
+isAdjacent(X, 0) :- elevator(X).
 inPath(X) :- actualPosition(X).
-inPath(X)|outPath(X) :- inPath(Y)  , isAdjacent(Y,X) .
+inPath(X) | outPath(X) :- inPath(Y), isAdjacent(Y,X).
 :- inPath(X) , enemy(X) .
 isTarget(X) | isNotTarget(X) :- inPath(X).
 :- #count{X : isTarget(X)} != 1.
 :- isTarget(X), painted(X).
-:~ inPath(X). [1@1 , X]
-
-
+:~ inPath(X), not painted(X). [1@1, X]
+:~ inPath(X). [1@2 , X]

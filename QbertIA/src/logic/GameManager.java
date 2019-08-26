@@ -32,6 +32,8 @@ public class GameManager {
 		round=1;
 		findTarget = new ASPConnector("QbertIA" + File.separator + "src" + File.separator +
 				"encodings" + File.separator + "computetarget");
+		world.setElevatorAdiacent(0, 6);
+		world.setElevatorAdiacent(1, 9);
 	}
 	
 	public void setBlockVisited(int index) {
@@ -98,10 +100,14 @@ public class GameManager {
 		return qbert.getState();
 	}
 
-	public void fillAdjacentBlocks(){
+	public void putFactsToComputeTargets(){
         int blockpos= world.blockIndex(position.get(qbert));
 		findTarget.putFact("actualPosition("+blockpos+").");
-        
+
+		for (int i = 0; i < World.NUM_ELEVATOR; i++) {
+			findTarget.putFact("elevator(" + world.getElevatorAdiacent(i) + ").");
+		}
+		
 		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
 			if(world.isVisited(i))findTarget.putFact("painted("+i+")");
 		}

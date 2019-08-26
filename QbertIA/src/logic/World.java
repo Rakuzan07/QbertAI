@@ -2,7 +2,7 @@ package logic;
 
 public class World {
 
-	private static final int NUM_ELEVATOR=2;
+	public static final int NUM_ELEVATOR=2;
 	private static final int DEFAULT_ELEVATOR_FAD=6 , DEFAULT_ELEVATOR_SAD=9;
     private int isometricBlockNumber = 28;
     private int blockLevels = 7;
@@ -129,7 +129,11 @@ public class World {
         return isometricBlockNumber;
     }
     
-    public void setAdiacent(int elevator , int adiacent) {
+    public void setElevatorAdiacent(int elevator , int adiacent) {
     	elevators[elevator]=new Elevator(blocks[adiacent]);
+    }
+
+    public int getElevatorAdiacent(int elevator){
+        return elevators[elevator].adjacent.getId();
     }
 }

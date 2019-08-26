@@ -3,6 +3,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import it.unical.mat.embasp.languages.IllegalAnnotationException;
 import it.unical.mat.embasp.languages.ObjectNotValidException;
@@ -58,6 +59,29 @@ public class GameManager {
 	
 	public int posQbert() {
 		return world.blockIndex(position.get(qbert));
+	}
+	public int moveEnemy(Player p) {
+		if (p instanceof Ball || (p instanceof Snake && ((Snake) p).getStatusHatch())) {
+			Random r=new Random();
+			int random=r.nextInt(100);
+			if(random<=50) {
+				p.setState(Player.Status.D_LEFT);
+				IsometricBlock temp_pos=position.get(p);
+				if(temp_pos.getAdiacentDownLeft()!=null){
+					position.put(p, temp_pos.getAdiacentDownLeft());
+				}
+				return world.blockIndex(temp_pos);
+			}
+			else {
+				p.setState(Player.Status.D_RIGHT);
+				IsometricBlock temp_pos=position.get(p);
+				if(temp_pos.getAdiacentDownRight()!=null){
+					position.put(p, temp_pos.getAdiacentDownRight());
+				}
+				return world.blockIndex(temp_pos);
+			}
+		} 
+		return -1;
 	}
 	
 	public int goDownLeft() {
@@ -160,6 +184,22 @@ public class GameManager {
 	}
 
 	public void generateEnemy() {
-		
+		int ballprob=50;
+		for(Player p : position.keySet()) {
+			if(p instanceof Snake) { ballprob=ballprob+10; }
+			else if (p instanceof Ball) { ballprob=ballprob-10;}
+		}
+		Random r=new Random();
+		int random=r.nextInt(100);
+		if(random<=ballprob) {
+			Ball b=gf.createBall();
+			if(random%2==0)position.put(b, world.getBlock(1));
+			else position.put(b, world.getBlock(2));
+		}
+		else {
+			Snake s=gf.createSnake();
+			if(random%2==0)position.put(s, world.getBlock(1));
+			else position.put(s, world.getBlock(2));
+		}
 	}
 }

@@ -15,6 +15,7 @@ public class GameManager {
 	//CLASSE A CUI SI DELEGA LA GESTIONE DELLA PARTE LOGICA E DELL'AI , PERMETTENDO LA COMUNICAZIONE
 	// TRA LA CLASSE PLAYER/ENEMY E LA CLASSE WORLD 
 	
+	
 	private GameFactory gf;
 	private Player qbert;
 	private World world;

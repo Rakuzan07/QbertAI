@@ -2,15 +2,20 @@ package logic;
 
 public class World {
 
+	private static final int NUM_ELEVATOR=2;
+	private static final int DEFAULT_ELEVATOR_FAD=6 , DEFAULT_ELEVATOR_SAD=9;
     private int isometricBlockNumber = 28;
     private int blockLevels = 7;
     private IsometricBlock[] blocks;
-
+    private Elevator[] elevators=new Elevator[NUM_ELEVATOR];
+    
     public World() {
         blocks = new IsometricBlock[isometricBlockNumber];
         createBlocks();
         fillIsometricBlocks();
         assignBlocksId();
+        elevators[0]=new Elevator(blocks[DEFAULT_ELEVATOR_FAD]);
+        elevators[1]=new Elevator(blocks[DEFAULT_ELEVATOR_SAD]);
     }
 
     private void createBlocks(){
@@ -122,5 +127,9 @@ public class World {
 
     public int getIsometricBlockNumber() {
         return isometricBlockNumber;
+    }
+    
+    public void setAdiacent(int elevator , int adiacent) {
+    	elevators[elevator]=new Elevator(blocks[adiacent]);
     }
 }

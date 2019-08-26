@@ -1,6 +1,9 @@
-reached(Y, G) :- reached(X, Z), isAdjacent(X, Y), not enemy(Y), G = Z + 1.
-reached(Y, Z) :- actualPosition(X), isAdjacent(X, Y), not enemy(Y), not notReached(Y), Z = 1.
-isTarget(X) | isNotTarget(X) :- reached(X, Y), Y > 1.
+inPath(X) :- actualPosition(X).
+inPath(X)|outPath(X) :- inPath(Y)  , isAdjacent(Y,X) .
+:- inPath(X) , enemy(X) .
+isTarget(X) | isNotTarget(X) :- inPath(X).
 :- #count{X : isTarget(X)} != 1.
 :- isTarget(X), painted(X).
-:~ isTarget(X), reached(X, Y). [Y@1, X]
+:~ inPath(X). [1@1 , X]
+
+

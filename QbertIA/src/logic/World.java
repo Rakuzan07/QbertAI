@@ -82,7 +82,7 @@ public class World {
     		IsometricBlock[] adiacenti=blocks[i].getAdiacent();
     		for(int j=0;j<adiacenti.length;j++) {
     		    if(adiacenti[j] != null)
-    		    s+="Blocco "+posIsometricBlock(adiacenti[j])+" \n";
+    		    s+="Blocco "+blockIndex(adiacenti[j])+" \n";
     		}
 
     		s += "\n";
@@ -90,12 +90,12 @@ public class World {
     	return s;
     }
 
-    public int posIsometricBlock(IsometricBlock s) {
+/*    public int posIsometricBlock(IsometricBlock s) {
     	for(int i=0;i<isometricBlockNumber;i++) {
     		if(s==blocks[i]) return i;
     	}
     	return -1;
-    }
+    }*/
     
     public IsometricBlock getBlock(int index) {
     	return blocks[index];

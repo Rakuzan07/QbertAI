@@ -96,9 +96,12 @@ public class GameManager {
 	}
 
 	public void fillAdjacentBlocks(){
-
-		findTarget.putFact("actualPosition(0).");
-
+        int blockpos= world.blockIndex(position.get(qbert));
+		findTarget.putFact("actualPosition("+blockpos+").");
+        
+		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
+			if(world.isVisited(i))findTarget.putFact("painted("+i+")");
+		}
 		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
 			findTarget.putFact(world.getBlock(i));
 		}

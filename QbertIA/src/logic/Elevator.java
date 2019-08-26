@@ -2,10 +2,11 @@ package logic;
 
 public class Elevator extends Element{
 	
+	IsometricBlock adjacent ;
 	
-	
-	public Elevator() {
+	public Elevator(IsometricBlock adjacent) {
 		visited=false;
+		this.adjacent=adjacent;
 	}
 	
 	

@@ -5,43 +5,23 @@ public class Player {
 	
 	public enum Status{U_RIGHT,D_RIGHT,U_LEFT,D_LEFT}
 	
-	private int life;
-	private boolean enemy;
+	protected int life;
 	private Status state=Status.D_LEFT;
-	private static int CONT=0;
 	private int id;
 	
-	public Player() {
-		id=CONT;
-		CONT++;
+	public Player(int cont) {
+		id=cont;
 		life=3;
-		enemy=false;
 	}
 	
-	public Player(int life) {
-		id=CONT;
-		CONT++;
+	public Player(int cont,int life) {
+		id=cont;
 		this.life=life;
-		enemy=false;
 	}
 	
-	public Player(boolean enemy) {
-		id=CONT;
-		CONT++;
-		this.enemy=enemy;
-		life=1;
-	}
+
 	
-	public Player(int life , boolean enemy) {
-		id=CONT;
-		CONT++;
-		this.life=life;
-		this.enemy=enemy;
-	}
 	
-	public boolean isEnemy() {
-		return enemy;
-	}
 	
 	public int getLife() {
 		return life;

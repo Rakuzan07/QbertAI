@@ -15,6 +15,7 @@ public class GameManager {
 	//CLASSE A CUI SI DELEGA LA GESTIONE DELLA PARTE LOGICA E DELL'AI , PERMETTENDO LA COMUNICAZIONE
 	// TRA LA CLASSE PLAYER/ENEMY E LA CLASSE WORLD 
 	
+	private GameFactory gf;
 	private Player qbert;
 	private World world;
 	private HashMap<Player,IsometricBlock> position=new HashMap<Player,IsometricBlock>();
@@ -22,8 +23,9 @@ public class GameManager {
 	private int level , round ;
 	
 	public GameManager() {
+		gf=new GameFactory();
 		world=new World();
-		qbert=new Player();
+		qbert=gf.createQbert();
 		position.put(qbert, world.getBlock(0));
 		level=1;
 		round=1;
@@ -145,4 +147,7 @@ public class GameManager {
 		return world.isVisited(index);
 	}
 
+	public void generateEnemy() {
+		
+	}
 }

@@ -1,0 +1,67 @@
+isAdjacent(X, 0, Y) :- elevator(X, Y).
+inPath(X) :- actualPosition(X).
+inPath(X) | outPath(X) :- inPath(Y), isAdjacent(Y, X, Z).
+:- inPath(X) , enemy(X) .
+isTarget(X) | isNotTarget(X) :- inPath(X).
+:- #count{X : isTarget(X)} != 1.
+:- isTarget(X), painted(X).
+:~ inPath(X), not painted(X). [1@1, X]
+:~ inPath(X). [1@2 , X]
+:- #count{X : positionToTake(X)} != 1.
+positionToTake(G) :- inPath(X), actualPosition(Y), isAdjacent(Y, X, G).
+
+actualPosition(2).
+painted(0).
+elevator(6, UL).
+elevator(9, UR).
+painted(2).
+isAdjacent(0, 1, DL).
+isAdjacent(0, 2, DR).
+isAdjacent(1, 3, DL).
+isAdjacent(1, 4, DR).
+isAdjacent(1, 0, UR).
+isAdjacent(2, 4, DL).
+isAdjacent(2, 5, DR).
+isAdjacent(2, 0, UL).
+isAdjacent(3, 6, DL).
+isAdjacent(3, 7, DR).
+isAdjacent(3, 1, UR).
+isAdjacent(4, 7, DL).
+isAdjacent(4, 8, DR).
+isAdjacent(4, 1, UL).
+isAdjacent(4, 2, UR).
+isAdjacent(5, 8, DL).
+isAdjacent(5, 9, DR).
+isAdjacent(5, 2, UL).
+isAdjacent(6, 10, DL).
+isAdjacent(6, 11, DR).
+isAdjacent(6, 3, UR).
+isAdjacent(7, 11, DL).
+isAdjacent(7, 12, DR).
+isAdjacent(7, 3, UL).
+isAdjacent(7, 4, UR).
+isAdjacent(8, 12, DL).
+isAdjacent(8, 13, DR).
+isAdjacent(8, 4, UL).
+isAdjacent(8, 5, UR).
+isAdjacent(9, 13, DL).
+isAdjacent(9, 14, DR).
+isAdjacent(9, 5, UL).
+isAdjacent(10, 15, DL).
+isAdjacent(10, 16, DR).
+isAdjacent(10, 6, UR).
+isAdjacent(11, 16, DL).
+isAdjacent(11, 17, DR).
+isAdjacent(11, 6, UL).
+isAdjacent(11, 7, UR).
+isAdjacent(12, 17, DL).
+isAdjacent(12, 18, DR).
+isAdjacent(12, 7, UL).
+isAdjacent(12, 8, UR).
+isAdjacent(13, 18, DL).
+isAdjacent(13, 19, DR).
+isAdjacent(13, 8, UL).
+isAdjacent(13, 9, UR).
+isAdjacent(14, 19, DL).
+isAdjacent(14, 20, DR).
+isAdjacent(14, 9, UL).

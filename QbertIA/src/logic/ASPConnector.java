@@ -27,6 +27,10 @@ public class ASPConnector {
         logicProgram.addFilesPath(logicProgramPath);
     }
 
+    public void clear(){
+        facts.clearAll();
+    }
+
     public void putFact(Object o){
         try {
             facts.addObjectInput(o);

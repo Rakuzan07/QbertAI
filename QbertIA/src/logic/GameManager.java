@@ -35,6 +35,7 @@ public class GameManager {
 				"encodings" + File.separator + "computetarget");
 		world.setElevatorAdiacent(0, 6);
 		world.setElevatorAdiacent(1, 9);
+		setBlockVisited(0);
 	}
 	
 	public void setBlockVisited(int index) {
@@ -147,11 +148,7 @@ public class GameManager {
 		}
 
 		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
-			if(world.isVisited(i))findTarget.putFact("painted("+i+")");
-		}
-
-		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
-			findTarget.putFact(world.getBlock(i));
+			if(world.isVisited(i))findTarget.putFact("painted("+i+").");
 		}
 
 		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
@@ -191,15 +188,19 @@ public class GameManager {
 						PositionToTake target = (PositionToTake) o;
 						System.out.println(target);
 						if(target.toString().contains("UL")) {
+							findTarget.clear();
 							return goUpLeft();
 						}
 						else if(target.toString().contains("UR")) {
+							findTarget.clear();
 							return goUpRight();
 						}
 						else if(target.toString().contains("DR")) {
+							findTarget.clear();
 							return goDownRight();
 						}
 						else {
+							findTarget.clear();
 							return goDownLeft();
 						}
 					}

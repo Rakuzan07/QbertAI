@@ -1,5 +1,6 @@
 inPath(X) :- actualPosition(X).
 inPath(X) | outPath(X) :- inPath(Y), isAdjacent(Y, X, Z).
+:- #count{X : inPath(X) , target(X) } != 1.
 :~ inPath(X), not painted(X). [1@1, X]
 :~ inPath(X). [1@2 , X]
 :- #count{X : positionToTake(X)} != 1.

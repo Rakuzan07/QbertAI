@@ -22,6 +22,7 @@ public class GameManager {
 	private World world;
 	private HashMap<Player,IsometricBlock> position=new HashMap<Player,IsometricBlock>();
 	private ASPConnector findTarget;
+	private ASPConnector enemyMovement;
 	private int level , round ;
 	
 	public GameManager() {
@@ -33,6 +34,8 @@ public class GameManager {
 		round=1;
 		findTarget = new ASPConnector("QbertIA" + File.separator + "src" + File.separator +
 				"encodings" + File.separator + "computetarget");
+		enemyMovement = new ASPConnector("QbertIA" + File.separator + "src" + File.separator +
+				"encodings" + File.separator + "enemyIAt");
 		world.setElevatorAdiacent(0, 6);
 		world.setElevatorAdiacent(1, 9);
 		setBlockVisited(0);
@@ -82,41 +85,78 @@ public class GameManager {
 				return world.blockIndex(temp_pos);
 			}
 		} 
+		else if((p instanceof Snake && !((Snake) p).getStatusHatch())) {
+			int blockpos= world.blockIndex(position.get(p));
+			int targetPos = world.blockIndex(position.get(qbert));
+			findTarget.putFact("actualPosition("+blockpos+").");
+			findTarget.putFact("target("+ targetPos +").");
+
+			findTarget.putFact("painted(0).");
+
+			for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
+				if(world.isVisited(i))findTarget.putFact("painted("+i+").");
+			}
+
+			for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
+
+				if(world.getBlock(i).getAdiacentDownLeft() != null) {
+					findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownLeft().getId(), "DL"));
+				}
+
+				if(world.getBlock(i).getAdiacentDownRight() != null) {
+					findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownRight().getId(), "DR"));
+				}
+
+				if(world.getBlock(i).getAdiacentUpLeft() != null) {
+					findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpLeft().getId(), "UL"));
+				}
+
+				if(world.getBlock(i).getAdiacentUpRight() != null) {
+					findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpRight().getId(), "UR"));
+				}
+			}
+			
+			computeBlocksPaths(p);
+		}
 		return -1;
 	}
 	
-	public int goDownLeft() {
-		qbert.setState(Player.Status.D_LEFT);
-		IsometricBlock temp_pos=position.get(qbert);
+	public int getBlockIndex(Player p) {
+		return world.blockIndex(position.get(p));
+	}
+
+	public int goDownLeft(Player p) {
+		p.setState(Player.Status.D_LEFT);
+		IsometricBlock temp_pos=position.get(p);
 		if(temp_pos.getAdiacentDownLeft()!=null){
-			position.put(qbert, temp_pos.getAdiacentDownLeft());
+			position.put(p, temp_pos.getAdiacentDownLeft());
 		}
 		return world.blockIndex(temp_pos);
 	}
 	
-	public int goDownRight() {
-		qbert.setState(Player.Status.D_RIGHT);
-		IsometricBlock temp_pos=position.get(qbert);
+	public int goDownRight(Player p) {
+		p.setState(Player.Status.D_RIGHT);
+		IsometricBlock temp_pos=position.get(p);
 		if(temp_pos.getAdiacentDownRight()!=null){
-			position.put(qbert, temp_pos.getAdiacentDownRight());
+			position.put(p, temp_pos.getAdiacentDownRight());
 		}
 		return world.blockIndex(temp_pos);
 	}
 	
-	public int goUpLeft() {
-		qbert.setState(Player.Status.U_LEFT);
-		IsometricBlock temp_pos=position.get(qbert);
+	public int goUpLeft(Player p) {
+		p.setState(Player.Status.U_LEFT);
+		IsometricBlock temp_pos=position.get(p);
 		if(temp_pos.getAdiacentUpLeft()!=null){
-			position.put(qbert, temp_pos.getAdiacentUpLeft());
+			position.put(p, temp_pos.getAdiacentUpLeft());
 		}
 		return world.blockIndex(temp_pos);
 	}
 	
-	public int goUpRight() {
-		qbert.setState(Player.Status.U_RIGHT);
-		IsometricBlock temp_pos=position.get(qbert);
+	public int goUpRight(Player p) {
+		p.setState(Player.Status.U_RIGHT);
+		IsometricBlock temp_pos=position.get(p);
 		if(temp_pos.getAdiacentUpRight()!=null){
-			position.put(qbert, temp_pos.getAdiacentUpRight());
+			position.put(p, temp_pos.getAdiacentUpRight());
 		}
 		return world.blockIndex(temp_pos);
 	}
@@ -171,7 +211,7 @@ public class GameManager {
 		}
 	}
 
-	public int computeBlocksPaths(){
+	public int computeBlocksPaths(Player p){
 
 		try {
 			ASPMapper.getInstance().registerClass(PositionToTake.class);
@@ -189,19 +229,19 @@ public class GameManager {
 						System.out.println(target);
 						if(target.toString().contains("UL")) {
 							findTarget.clear();
-							return goUpLeft();
+							return goUpLeft(p);
 						}
 						else if(target.toString().contains("UR")) {
 							findTarget.clear();
-							return goUpRight();
+							return goUpRight(p);
 						}
 						else if(target.toString().contains("DR")) {
 							findTarget.clear();
-							return goDownRight();
+							return goDownRight(p);
 						}
 						else {
 							findTarget.clear();
-							return goDownLeft();
+							return goDownLeft(p);
 						}
 					}
 				}
@@ -216,7 +256,11 @@ public class GameManager {
 	public boolean isVisited(int index) {
 		return world.isVisited(index);
 	}
-
+	
+    public HashMap<Player,IsometricBlock> getEnemyBlock(){
+    	return position;
+    }
+    
 	public void generateEnemy() {
 		int ballprob=50;
 		for(Player p : position.keySet()) {
@@ -236,4 +280,9 @@ public class GameManager {
 			else position.put(s, world.getBlock(2));
 		}
 	}
+	
+	public Player getQbert() {
+		return qbert;
+	}
+	
 }

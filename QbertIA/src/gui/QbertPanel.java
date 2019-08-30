@@ -22,7 +22,7 @@ import logic.Snake;
 
 public class QbertPanel extends JPanel implements KeyListener {
 
-	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , TICK_GENERATE=12 , FALL=12;
+	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , TICK_GENERATE=32 , FALL=12;
 	private int screenStatus , animationElevator , generator;
 	private boolean first=true , start=true ;
 	private Toolkit tk = Toolkit.getDefaultToolkit();

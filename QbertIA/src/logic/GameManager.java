@@ -88,31 +88,31 @@ public class GameManager {
 		else if((p instanceof Snake && !((Snake) p).getStatusHatch())) {
 			int blockpos= world.blockIndex(position.get(p));
 			int targetPos = world.blockIndex(position.get(qbert));
-			findTarget.putFact("actualPosition("+blockpos+").");
-			findTarget.putFact("target("+ targetPos +").");
+			enemyMovement.putFact("actualPosition("+blockpos+").");
+			enemyMovement.putFact("target("+ targetPos +").");
 
-			findTarget.putFact("painted(0).");
+			enemyMovement.putFact("painted(0).");
 
 			for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
-				if(world.isVisited(i))findTarget.putFact("painted("+i+").");
+				if(world.isVisited(i))enemyMovement.putFact("painted("+i+").");
 			}
 
 			for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
 
 				if(world.getBlock(i).getAdiacentDownLeft() != null) {
-					findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownLeft().getId(), "DL"));
+					enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownLeft().getId(), "DL"));
 				}
 
 				if(world.getBlock(i).getAdiacentDownRight() != null) {
-					findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownRight().getId(), "DR"));
+					enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownRight().getId(), "DR"));
 				}
 
 				if(world.getBlock(i).getAdiacentUpLeft() != null) {
-					findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpLeft().getId(), "UL"));
+					enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpLeft().getId(), "UL"));
 				}
 
 				if(world.getBlock(i).getAdiacentUpRight() != null) {
-					findTarget.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpRight().getId(), "UR"));
+					enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpRight().getId(), "UR"));
 				}
 			}
 			

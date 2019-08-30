@@ -22,7 +22,7 @@ import logic.Snake;
 
 public class QbertPanel extends JPanel implements KeyListener {
 
-	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , TICK_GENERATE=36 , FALL=12;
+	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , TICK_GENERATE=12 , FALL=12;
 	private int screenStatus , animationElevator , generator;
 	private boolean first=true , start=true ;
 	private Toolkit tk = Toolkit.getDefaultToolkit();
@@ -286,7 +286,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 			else if(p instanceof Snake && !((Snake)p).getStatusHatch()) {g.drawImage(getSnakeImage(p,SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
 			gm.moveEnemy(p);
 			if ( enemyPosition.get(p)==gm.getBlockIndex(p) && p instanceof Snake && ((Snake)p).getStatusHatch() ) { ((Snake)p).hatch(); gm.moveEnemy(p);}
-			else if(enemyPosition.get(p)==gm.getBlockIndex(p)) { fallenEnemy.put(p, true); enemyPosition.put(p, 0);
+			else if(enemyPosition.get(p)==gm.getBlockIndex(p)) { fallenEnemy.put(p, true); enemyPosition.put(p, 0);}
 			/*gm.setBlockVisited(initialQbertIndex);
 			gm.putFactsToComputeTargets();
 			gm.computeBlocksPaths(gm.getQbert());*/
@@ -331,7 +331,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 					else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
 				}}
-		}}}
+		}}
 			
 		}
 		

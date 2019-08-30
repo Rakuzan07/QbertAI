@@ -200,6 +200,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 			gm.setBlockVisited(initialQbertIndex);
 			gm.putFactsToComputeTargets();
 			gm.computeBlocksPaths(gm.getQbert());
+			System.out.println(generator);
 			generator=(generator+1)%TICK_GENERATE;
 			/*Random r=new Random();
 			if(r.nextInt()%10<2)gm.goDownLeft(gm.getQbert());

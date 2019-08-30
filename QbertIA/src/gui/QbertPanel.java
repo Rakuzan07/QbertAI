@@ -77,7 +77,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 	}
 
 	private void paintPlayScreen(Graphics g) {
-		
+		loadWorld();
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		g.drawImage(logo, 50, 50, this);
@@ -135,7 +135,21 @@ public class QbertPanel extends JPanel implements KeyListener {
 	// ****************//
 	// EVENTI DEL MOUSE//
 	// ****************//
-
+    
+	public void loadWorld() {
+		if(gm.worldCompleted()) {
+			gm.resetWorld();
+			block=tk.getImage(this.getClass().getResource("resources//play//block"+gm.getLevel()+"_"+gm.getRound()+".png"));
+			blockc=(tk.getImage(this.getClass().getResource("resources//play//block"+gm.getLevel()+"_"+gm.getRound()+"c.png")));
+			change = tk.getImage(this.getClass().getResource("resources//play//block"+gm.getLevel()+"_"+gm.getRound()+"m.png"));
+			initialQbertIndex=0;
+			qbertPosition=new Position(blockPosition.get(initialQbertIndex).getX(),blockPosition.get(initialQbertIndex).getY());
+			enemyPosition.clear();
+			enemyGraphicPosition.clear();
+			fallenEnemy.clear();
+			start=true;
+		}
+	}
 	public void keyPressed(KeyEvent arg0) {
 		elevator=new ArrayList<Image>();
 		fallenEnemy=new HashMap<Player,Boolean>();

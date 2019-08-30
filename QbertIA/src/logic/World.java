@@ -52,6 +52,19 @@ public class World {
         return -1;
     }
 
+    public boolean completed() {
+    	for(int i=0;i<blocks.length;i++) {
+    		if(!blocks[i].visited) return false;
+    	}
+    	return true;
+    }
+    
+    public void reset() {
+    	for(int i=0;i<blocks.length;i++) {
+    		blocks[i].setVisited(false);
+    	}
+    }
+    
     private void fillIsometricBlocks(){
         for (int i = 0; i < isometricBlockNumber; i++) {
 

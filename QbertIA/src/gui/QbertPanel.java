@@ -247,8 +247,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 				ePosition.setX(ePosition.getX()-1);
 				ePosition.setY(ePosition.getY()+1);
 				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof Snake ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if( p instanceof Snake & !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+				else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				enemyPosition.put(p, enemyPosition.get(p)+1);
 				if(enemyPosition.get(p)==FALL) { fallenEnemy.remove(p) ; enemyPosition.remove(p) ; enemyGraphicPosition.remove(p);}
 			}
@@ -256,8 +256,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 				ePosition.setX(ePosition.getX()+1);
 				ePosition.setY(ePosition.getY()+1);
 				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof Snake ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if( p instanceof Snake & !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+				else if ( p instanceof Snake && ((Snake)p).getStatusHatch() ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				enemyPosition.put(p, enemyPosition.get(p)+1);
 				if(enemyPosition.get(p)==FALL) { fallenEnemy.remove(p) ; enemyPosition.remove(p) ; enemyGraphicPosition.remove(p);}
 			}
@@ -265,8 +265,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 				ePosition.setX(ePosition.getX()+1);
 				ePosition.setY(ePosition.getY()-1);
 				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof Snake & ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if( p instanceof Snake & !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+				else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				enemyPosition.put(p, enemyPosition.get(p)+1);
 				if(enemyPosition.get(p)==FALL) { fallenEnemy.remove(p) ; enemyPosition.remove(p) ; enemyGraphicPosition.remove(p);}
 			}
@@ -274,18 +274,18 @@ public class QbertPanel extends JPanel implements KeyListener {
 				ePosition.setX(ePosition.getX()-1);
 				ePosition.setY(ePosition.getY()-1);
 				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof Snake ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if( p instanceof Snake & !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+				else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				enemyPosition.put(p, enemyPosition.get(p)+1);
 				if(enemyPosition.get(p)==FALL) { fallenEnemy.remove(p) ; enemyPosition.remove(p) ; enemyGraphicPosition.remove(p);}
 			}
 		}
 		else if(enemyPosition.get(p)==gm.getBlockIndex(p)) {
 			if(p instanceof Ball) { g.drawImage(ball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
-			else if ( p instanceof Snake & ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
-			else if(p instanceof Snake & !((Snake)p).getStatusHatch()) {g.drawImage(getSnakeImage(p,SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
+			else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
+			else if(p instanceof Snake && !((Snake)p).getStatusHatch()) {g.drawImage(getSnakeImage(p,SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
 			gm.moveEnemy(p);
-			if ( enemyPosition.get(p)==gm.getBlockIndex(p) & p instanceof Snake & ((Snake)p).getStatusHatch() ) { ((Snake)p).hatch(); gm.moveEnemy(p);}
+			if ( enemyPosition.get(p)==gm.getBlockIndex(p) && p instanceof Snake && ((Snake)p).getStatusHatch() ) { ((Snake)p).hatch(); gm.moveEnemy(p);}
 			else if(enemyPosition.get(p)==gm.getBlockIndex(p)) { fallenEnemy.put(p, true); enemyPosition.put(p, 0);
 			/*gm.setBlockVisited(initialQbertIndex);
 			gm.putFactsToComputeTargets();
@@ -303,32 +303,32 @@ public class QbertPanel extends JPanel implements KeyListener {
 					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8) ePosition.setX(ePosition.getX()-1);
 					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4) ePosition.setY(ePosition.getY()+1);
 					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof Snake ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if( p instanceof Snake & !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+					else if ( p instanceof Snake && ((Snake)p).getStatusHatch() ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+					else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
 				}
 				if(p.getState()==Player.Status.D_RIGHT) {
 					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8) ePosition.setX(ePosition.getX()+1);
 					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4) ePosition.setY(ePosition.getY()+1);
 					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof Snake ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if( p instanceof Snake & !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+					else if ( p instanceof Snake && ((Snake)p).getStatusHatch() ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+					else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
 				}
 				if(p.getState()==Player.Status.U_RIGHT) {
 					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8) ePosition.setX(ePosition.getX()+1);
 					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4) ePosition.setY(ePosition.getY()-1);
 					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof Snake & ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if( p instanceof Snake & !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+					else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+					else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
 				}
 				if(p.getState()==Player.Status.U_LEFT) {
 					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8) ePosition.setX(ePosition.getX()-1);
 					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4) ePosition.setY(ePosition.getY()-1);
 					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof Snake ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if( p instanceof Snake & !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+					else if ( p instanceof Snake && ((Snake)p).getStatusHatch() ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
+					else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
 				}}
 		}}}

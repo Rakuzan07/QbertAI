@@ -16,7 +16,7 @@ public class GameManager {
 	//CLASSE A CUI SI DELEGA LA GESTIONE DELLA PARTE LOGICA E DELL'AI , PERMETTENDO LA COMUNICAZIONE
 	// TRA LA CLASSE PLAYER/ENEMY E LA CLASSE WORLD 
 	
-	
+	public static final int MAX_ROUND=3 , MAX_LEVEL=3;
 	private GameFactory gf;
 	private Player qbert;
 	private World world;
@@ -165,6 +165,14 @@ public class GameManager {
 		return qbert.getState();
 	}
 
+	public boolean worldCompleted() {
+		return world.completed();
+	}
+	
+	public void resetWorld() {
+		world.reset();
+	}
+	
 	public void putFactsToComputeTargets(){
 
 		int blockpos= world.blockIndex(position.get(qbert));
@@ -286,6 +294,16 @@ public class GameManager {
 	
 	public Player getQbert() {
 		return qbert;
+	}
+	
+	public void upgrade() {
+		if(round<MAX_ROUND) {
+			round++;
+		}
+		else {
+			level++;
+			round=1;
+		}
 	}
 	
 }

@@ -35,7 +35,7 @@ public class GameManager {
 		findTarget = new ASPConnector("QbertIA" + File.separator + "src" + File.separator +
 				"encodings" + File.separator + "computetarget");
 		enemyMovement = new ASPConnector("QbertIA" + File.separator + "src" + File.separator +
-				"encodings" + File.separator + "enemyIAt");
+				"encodings" + File.separator + "enemyIA");
 		world.setElevatorAdiacent(0, 6);
 		world.setElevatorAdiacent(1, 9);
 		setBlockVisited(0);
@@ -115,8 +115,8 @@ public class GameManager {
 					enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpRight().getId(), "UR"));
 				}
 			}
-			
-			computeBlocksPaths(p);
+
+			computeBlocksPaths(p, enemyMovement);
 		}
 		return -1;
 	}
@@ -211,7 +211,11 @@ public class GameManager {
 		}
 	}
 
-	public int computeBlocksPaths(Player p){
+    public ASPConnector getFindTarget() {
+        return findTarget;
+    }
+
+    public int computeBlocksPaths(Player p, ASPConnector connector){
 
 		try {
 			ASPMapper.getInstance().registerClass(PositionToTake.class);
@@ -219,28 +223,27 @@ public class GameManager {
 			e.printStackTrace();
 		}
 
-		List<AnswerSet> answerSetList = findTarget.startSync();
-		System.out.println(answerSetList.size());
+		List<AnswerSet> answerSetList = connector.startSync();
+
 		for (AnswerSet answerSet : answerSetList) {
 			try {
 				for (Object o : answerSet.getAtoms()) {
 					if(o instanceof PositionToTake){
 						PositionToTake target = (PositionToTake) o;
-						System.out.println(target);
 						if(target.toString().contains("UL")) {
-							findTarget.clear();
+							connector.clear();
 							return goUpLeft(p);
 						}
 						else if(target.toString().contains("UR")) {
-							findTarget.clear();
+                            connector.clear();
 							return goUpRight(p);
 						}
 						else if(target.toString().contains("DR")) {
-							findTarget.clear();
+                            connector.clear();
 							return goDownRight(p);
 						}
 						else {
-							findTarget.clear();
+                            connector.clear();
 							return goDownLeft(p);
 						}
 					}

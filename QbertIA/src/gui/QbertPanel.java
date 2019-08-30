@@ -57,7 +57,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 		Sketcher sk = new Sketcher();
 		new Thread(sk).start();
 		gm.putFactsToComputeTargets();
-		gm.computeBlocksPaths(gm.getQbert());
+
 	}
 
 	public void paintComponent(Graphics g) {
@@ -240,7 +240,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 	
 	private void drawEnemy(Graphics g) {
        for(Player p : enemyPosition.keySet()) {
-		if(fallenEnemy.get(p)) {
+		if(fallenEnemy.get(p)!=null && fallenEnemy.get(p)) {
 			Position ePosition=enemyGraphicPosition.get(p);
 			if(p.getState()==Player.Status.D_LEFT) {
 				ePosition.setX(ePosition.getX()-1);

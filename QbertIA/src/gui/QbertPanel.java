@@ -138,7 +138,9 @@ public class QbertPanel extends JPanel implements KeyListener {
     
 	public void loadWorld() {
 		if(gm.worldCompleted()) {
+			gm.upgrade();
 			gm.resetWorld();
+			gm.clearConnectors();
 			block=tk.getImage(this.getClass().getResource("resources//play//block"+gm.getLevel()+"_"+gm.getRound()+".png"));
 			blockc=(tk.getImage(this.getClass().getResource("resources//play//block"+gm.getLevel()+"_"+gm.getRound()+"c.png")));
 			change = tk.getImage(this.getClass().getResource("resources//play//block"+gm.getLevel()+"_"+gm.getRound()+"m.png"));

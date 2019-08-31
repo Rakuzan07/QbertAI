@@ -170,6 +170,7 @@ public class GameManager {
 	}
 	
 	public void resetWorld() {
+		world.blockIndex(position.put(qbert, world.getBlock(0)));
 		world.reset();
 	}
 	
@@ -232,7 +233,6 @@ public class GameManager {
 		}
 
 		List<AnswerSet> answerSetList = connector.startSync();
-
 		for (AnswerSet answerSet : answerSetList) {
 			try {
 				for (Object o : answerSet.getAtoms()) {
@@ -266,6 +266,11 @@ public class GameManager {
 	
 	public boolean isVisited(int index) {
 		return world.isVisited(index);
+	}
+
+	public void clearConnectors(){
+		findTarget.clear();
+		enemyMovement.clear();
 	}
 	
     public HashMap<Player,IsometricBlock> getEnemyBlock(){

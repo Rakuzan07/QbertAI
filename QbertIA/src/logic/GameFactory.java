@@ -25,4 +25,19 @@ public class GameFactory {
 	      CONT++;
 	      return s;
 	}
+	
+	public GreenMan createGreenMan() {
+		GreenMan g=new GreenMan(CONT);
+		CONT++;
+		return g;
+	}
+	
+	public GreenBall createGreenBall() {
+		GreenBall b=new GreenBall(CONT);
+		CONT++;
+		return b;
+	}
+
+
+
 }

@@ -65,7 +65,7 @@ public class GameManager {
 		return world.blockIndex(position.get(qbert));
 	}
 	public int moveEnemy(Player p) {
-		if (p instanceof Ball || (p instanceof Snake && ((Snake) p).getStatusHatch())) {
+		if (p instanceof Ball || (p instanceof Snake && ((Snake) p).getStatusHatch()) || p instanceof GreenBall || p instanceof GreenMan) {
 			Random r=new Random();
 			int random=r.nextInt(100);
 			if(random<=50) {
@@ -295,12 +295,32 @@ public class GameManager {
 			if(random%2==0)position.put(s, world.getBlock(1));
 			else position.put(s, world.getBlock(2));
 		}
+	
+	}
+	
+	public void generateBonus() {
+		int greenManProb=50;
+		for(Player p : position.keySet()) {
+			if(p instanceof GreenMan) { greenManProb=greenManProb-10; }
+			else if (p instanceof GreenBall) { greenManProb=greenManProb+10;}
+		}
+		Random r=new Random();
+		int random=r.nextInt(100);
+		if(random<=greenManProb) {
+		    GreenMan g=gf.createGreenMan();
+			if(random%2==0)position.put(g, world.getBlock(1));
+			else position.put(g, world.getBlock(2));
+		}
+		else {
+			GreenBall b=gf.createGreenBall();
+			if(random%2==0)position.put(b, world.getBlock(1));
+			else position.put(b, world.getBlock(2));
+		}
 	}
 	
 	public int numVisit(int index){
 		return world.numVisit(index);
 	}
-	
 	public Player getQbert() {
 		return qbert;
 	}

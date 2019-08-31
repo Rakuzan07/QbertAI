@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import logic.Ball;
 import logic.GameManager;
+import logic.GreenBall;
 import logic.IsometricBlock;
 import logic.Player;
 import logic.Position;
@@ -22,7 +23,7 @@ import logic.Snake;
 
 public class QbertPanel extends JPanel implements KeyListener {
 
-	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , TICK_GENERATE=32 , FALL=12;
+	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , TICK_GENERATE=32 , FALL=12 , LEV_BONUS=2;
 	private int screenStatus , animationElevator , generator;
 	private boolean first=true , start=true ;
 	private Toolkit tk = Toolkit.getDefaultToolkit();
@@ -31,7 +32,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 	private int indexPAK = 0 , animationRow=0;
 	private Image changeto, level, round, row1, row2, life, change , nlevel , nround , logo;
 	private Image[] block;
-	private ArrayList<Image> d_right , d_left , u_right , u_left , snake_d_right , snake_d_left , snake_u_right , snake_u_left  ;
+	private ArrayList<Image> d_right , d_left , u_right , u_left , snake_d_right , snake_d_left , snake_u_right , snake_u_left , gm_d_left , gm_d_right ;
 	private GameManager gm;
 	private int initialQbertIndex;
 	private HashMap<Player,Integer> enemyPosition;
@@ -39,7 +40,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 	private HashMap<Player , Boolean> fallenEnemy;
 	private ArrayList<Position> blockPosition = new ArrayList<Position>();
     private Position qbertPosition;
-    private ArrayList<Image> elevator , ball , snakeball ;
+    private ArrayList<Image> elevator , ball , snakeball , greenBall ;
 	public QbertPanel() {
 		screenStatus = DEMO_SCREEN;
 		demoScreenBackground = tk.getImage(this.getClass().getResource("resources//demo//QbertRebooted.jpg"));
@@ -158,9 +159,22 @@ public class QbertPanel extends JPanel implements KeyListener {
 		fallenEnemy=new HashMap<Player,Boolean>();
 		enemyPosition=new HashMap<Player,Integer>();
 		enemyGraphicPosition=new HashMap<Player,Position>();
+		greenBall=new ArrayList<Image>();
+		gm_d_right=new ArrayList<Image>();
+		gm_d_left=new ArrayList<Image>();
 		ball=new ArrayList<Image>();
+		gm_d_right.add(tk.getImage(this.getClass().getResource("resources//play//greenman_right1.png")));
+		gm_d_right.add(tk.getImage(this.getClass().getResource("resources//play//greenman_right2.png")));
+		gm_d_right.add(tk.getImage(this.getClass().getResource("resources//play//greenman_right3.png")));
+		gm_d_right.add(tk.getImage(this.getClass().getResource("resources//play//greenman_right4.png")));
+		gm_d_left.add(tk.getImage(this.getClass().getResource("resources//play//greenman_left1.png")));
+		gm_d_left.add(tk.getImage(this.getClass().getResource("resources//play//greenman_left2.png")));
+		gm_d_left.add(tk.getImage(this.getClass().getResource("resources//play//greenman_left3.png")));
+		gm_d_left.add(tk.getImage(this.getClass().getResource("resources//play//greenman_left4.png")));
 		ball.add(tk.getImage(this.getClass().getResource("resources//play//ball1.png")));
 		ball.add(tk.getImage(this.getClass().getResource("resources//play//ball2.png")));
+		greenBall.add(tk.getImage(this.getClass().getResource("resources//play//greenball1.png")));
+		greenBall.add(tk.getImage(this.getClass().getResource("resources//play//greenball2.png")));
 		snakeball = new ArrayList<Image>();
 		snakeball.add(tk.getImage(this.getClass().getResource("resources//play//purpleball1.png")));
 		snakeball.add(tk.getImage(this.getClass().getResource("resources//play//purpleball2.png")));
@@ -204,7 +218,13 @@ public class QbertPanel extends JPanel implements KeyListener {
 	private void drawPlayer(Graphics g) {
 		if(initialQbertIndex==gm.posQbert()) {
 			if(generator==TICK_GENERATE-1) {
-				gm.generateEnemy();
+				if(gm.getLevel()<LEV_BONUS)gm.generateEnemy();
+				else {
+					Random r =new Random();
+					int prob=r.nextInt(100);
+					if(prob<50) gm.generateEnemy();
+					else gm.generateBonus();
+				}
 				HashMap<Player , IsometricBlock > enemy=gm.getEnemyBlock();
 				for(Player p : enemy.keySet()) {
 					if(p!=gm.getQbert() && !enemyPosition.containsKey(p)) {
@@ -299,6 +319,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 		}
 		else if(fallenEnemy.get(p)==null&&enemyPosition.get(p)==gm.getBlockIndex(p)) {
 			if(p instanceof Ball) { g.drawImage(ball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
+			else if(p instanceof GreenBall) { g.drawImage(ball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
 			else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
 			else if(p instanceof Snake && !((Snake)p).getStatusHatch()) {g.drawImage(getSnakeImage(p,SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
 			gm.moveEnemy(p);

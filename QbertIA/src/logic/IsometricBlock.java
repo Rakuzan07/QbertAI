@@ -35,6 +35,10 @@ public class IsometricBlock extends Element {
 		if(visited>0)visited--;
 	}
 	
+	
+	public int getVisited() {
+		return visited;
+	}
     
 	
 	public void addAdiacentUpRight(IsometricBlock ib) {

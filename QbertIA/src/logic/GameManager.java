@@ -297,6 +297,10 @@ public class GameManager {
 		}
 	}
 	
+	public int numVisit(int index){
+		return world.numVisit(index);
+	}
+	
 	public Player getQbert() {
 		return qbert;
 	}

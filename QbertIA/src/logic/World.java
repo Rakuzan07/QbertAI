@@ -134,6 +134,10 @@ public class World {
     	blocks[index].visit();
     }
     
+    public int numVisit(int index) {
+    	return blocks[index].getVisited();
+    }
+    
     public boolean isVisited(int index) {
     	return blocks[index].isVisited(); 
     }

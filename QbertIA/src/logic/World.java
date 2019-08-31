@@ -54,14 +54,14 @@ public class World {
 
     public boolean completed() {
     	for(int i=0;i<blocks.length;i++) {
-    		if(!blocks[i].visited) return false;
+    		if(blocks[i].visited>0) return false;
     	}
     	return true;
     }
     
-    public void reset() {
+    public void reset(int cont) {
     	for(int i=0;i<blocks.length;i++) {
-    		blocks[i].setVisited(false);
+    		blocks[i].setVisited(cont);
     	}
     }
     
@@ -131,7 +131,7 @@ public class World {
     }
     
     public void setVisited(int index) {
-    	blocks[index].setVisited(true);
+    	blocks[index].visit();
     }
     
     public boolean isVisited(int index) {

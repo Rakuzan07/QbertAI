@@ -12,19 +12,27 @@ public class IsometricBlock extends Element {
 	IsometricBlock[] adiacent=new IsometricBlock[4];
 	
 	public IsometricBlock() {
-		visited=false;
+		visited=1;
+	}
+	
+	public IsometricBlock(int visited) {
+		this.visited=visited;
 	}
 	
 	public IsometricBlock[] getAdiacent() {
 		return adiacent;
 	}
 	
-	public void setVisited(boolean visited) {
+	public void setVisited(int visited) {
 		this.visited=visited;
 	}
 	
 	public boolean isVisited() {
-		return visited;
+		return visited==0;
+	}
+	
+	public void visit() {
+		if(visited>0)visited--;
 	}
 	
     

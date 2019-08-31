@@ -16,7 +16,7 @@ public class GameManager {
 	//CLASSE A CUI SI DELEGA LA GESTIONE DELLA PARTE LOGICA E DELL'AI , PERMETTENDO LA COMUNICAZIONE
 	// TRA LA CLASSE PLAYER/ENEMY E LA CLASSE WORLD 
 	
-	public static final int MAX_ROUND=3 , MAX_LEVEL=3;
+	public static final int MAX_ROUND=3 , MAX_LEVEL=2;
 	private GameFactory gf;
 	private Player qbert;
 	private World world;
@@ -171,7 +171,7 @@ public class GameManager {
 	
 	public void resetWorld() {
 		world.blockIndex(position.put(qbert, world.getBlock(0)));
-		world.reset();
+		world.reset(level);
 	}
 	
 	public void putFactsToComputeTargets(){

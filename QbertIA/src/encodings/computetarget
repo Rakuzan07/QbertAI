@@ -8,4 +8,5 @@ isTarget(X) | isNotTarget(X) :- inPath(X).
 :~ inPath(X), not painted(X). [1@1, X]
 :~ inPath(X). [1@2 , X]
 :- #count{X : positionToTake(X)} != 1.
+:- isTarget(X), actualPosition(X).
 positionToTake(G) :- inPath(X), actualPosition(Y), isAdjacent(Y, X, G).

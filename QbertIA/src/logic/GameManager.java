@@ -161,6 +161,12 @@ public class GameManager {
 		return world.blockIndex(temp_pos);
 	}
 	
+	public void clearPosition() {
+		IsometricBlock ib=position.get(qbert);
+		position.clear();
+		position.put(qbert,ib);
+	}
+	
 	public Status getPlayerStatus() {
 		return qbert.getState();
 	}

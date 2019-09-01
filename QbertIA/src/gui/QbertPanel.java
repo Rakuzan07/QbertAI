@@ -139,6 +139,7 @@ public class QbertPanel extends JPanel implements KeyListener {
     
 	public void loadWorld() {
 		if(gm.worldCompleted()) {
+			gm.clearPosition();
 			gm.upgrade();
 			gm.resetWorld();
 			gm.clearConnectors();
@@ -312,7 +313,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 				else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				enemyPosition.put(p, enemyPosition.get(p)+1);
-				if(enemyPosition.get(p)==FALL) { fallenEnemy.remove(p) ; enemyPosition.remove(p) ; enemyGraphicPosition.remove(p);}
+				if(enemyPosition.get(p)==FALL) {fallenEnemy.put(p,false);}
 			}
 			if(p.getState()==Player.Status.U_LEFT) {
 				ePosition.setX(ePosition.getX()-1);
@@ -323,7 +324,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 				else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				enemyPosition.put(p, enemyPosition.get(p)+1);
-				if(enemyPosition.get(p)==FALL) { fallenEnemy.remove(p) ; enemyPosition.remove(p) ; enemyGraphicPosition.remove(p);}
+				if(enemyPosition.get(p)==FALL) { fallenEnemy.put(p,false);}
 			}
 		}
 		else if(fallenEnemy.get(p)==null&&enemyPosition.get(p)==gm.getBlockIndex(p)) {

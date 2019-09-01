@@ -431,7 +431,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 		if(p.getState()==Player.Status.D_LEFT) {
 			return gm_d_left.get(SITTED);
 		}
-		animationGreenMan=(animationGreenMan+1)%(NUM_SPRITE+1);
+		animationGreenMan=(animationGreenMan+1)%(NUM_SPRITE);
 		return gm_d_right.get(SITTED);
 		
 	}

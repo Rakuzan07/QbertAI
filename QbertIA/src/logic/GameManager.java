@@ -180,9 +180,15 @@ public class GameManager {
 		findTarget.putFact("actualPosition("+blockpos+").");
 
 		for(Player p: position.keySet())  {
-			if(p!=qbert) {
+			if(p!=qbert && (p instanceof Ball || p instanceof Snake)) {
 				blockpos = world.blockIndex(position.get(p));
 				findTarget.putFact("enemy("+blockpos+").");
+			} else if(p!=qbert && p instanceof GreenBall){
+				blockpos = world.blockIndex(position.get(p));
+				findTarget.putFact("greenBall("+blockpos+").");
+			} else if(p!=qbert && p instanceof GreenMan){
+				blockpos = world.blockIndex(position.get(p));
+				findTarget.putFact("greenMan("+blockpos+").");
 			}
 		}
 

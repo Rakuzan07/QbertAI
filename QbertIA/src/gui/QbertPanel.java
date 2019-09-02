@@ -220,7 +220,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 	private void drawPlayer(Graphics g) {
 		if(initialQbertIndex==gm.posQbert()) {
 			if(generator==TICK_GENERATE-1) {
-				if(gm.getLevel()<LEV_BONUS)gm.generateEnemy();
+				if(gm.getLevel()<LEV_BONUS)gm.generateBonus();
 				else {
 					Random r =new Random();
 					int prob=r.nextInt(100);

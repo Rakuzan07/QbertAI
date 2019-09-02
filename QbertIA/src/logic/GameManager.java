@@ -180,6 +180,23 @@ public class GameManager {
 		world.reset(level);
 	}
 	
+	public void restart() {
+		world.reset(level);
+	}
+	
+	public boolean checkQbertDeath() {
+	     for ( Player p : position.keySet()) {
+	    	 if(position.get(qbert)==position.get(p)&&p!=qbert) {
+	    		 return true;
+	    	 }
+	     }
+	     return false;
+	}
+	
+	public void decrLife() {
+		qbert.decrementLife();
+	}
+	
 	public void putFactsToComputeTargets(){
 
 		int blockpos= world.blockIndex(position.get(qbert));

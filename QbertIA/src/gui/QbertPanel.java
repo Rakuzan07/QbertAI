@@ -134,9 +134,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 		drawEnemy(g);
 		g.drawImage(elevator.get(animationElevator), 536 , 322 ,this);
 		g.drawImage(elevator.get(animationElevator), 682 , 322 ,this);
-		g.drawImage(elevator.get(animationElevator) , 536+contx , 322-conty , this);
-		if(conty%2==0)contx++;
-		conty++;
+		
 		animationElevator=(animationElevator+1)%LIMIT_ELEVATOR;
 	}
 

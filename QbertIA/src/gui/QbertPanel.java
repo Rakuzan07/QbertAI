@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JPanel;
 
 import logic.Ball;
+import logic.Elevator;
 import logic.GameManager;
 import logic.GreenBall;
 import logic.GreenMan;
@@ -24,7 +25,7 @@ import logic.Snake;
 
 public class QbertPanel extends JPanel implements KeyListener {
 
-	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , TICK_GENERATE=32 , FALL=12 , LEV_BONUS=2 , NUM_SPRITE=4 , DEATH=12 , DIM_ASSET=16;
+	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , TICK_GENERATE=32 , FALL=12 , LEV_BONUS=2 , NUM_SPRITE=4 , DEATH=12 , DIM_ASSET=16 , NUM_ELEVATOR=2;
 	private int screenStatus , animationElevator , generator;
 	private boolean first=true , start=true ;
 	private Toolkit tk = Toolkit.getDefaultToolkit();
@@ -41,7 +42,9 @@ public class QbertPanel extends JPanel implements KeyListener {
 	private HashMap<Player , Boolean> fallenEnemy;
 	private ArrayList<Position> blockPosition = new ArrayList<Position>();
     private Position qbertPosition;
+    private Elevator[] elevators=new Elevator[NUM_ELEVATOR];
     private ArrayList<Image> elevator , ball , snakeball , greenBall ;
+    int contx , conty;
 	public QbertPanel() {
 		screenStatus = DEMO_SCREEN;
 		demoScreenBackground = tk.getImage(this.getClass().getResource("resources//demo//QbertRebooted.jpg"));
@@ -78,6 +81,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 		g.drawImage(pressAnyKey.get(indexPAK), 480, 700, this);
 		indexPAK = (indexPAK + 1) % pressAnyKey.size();
 	}
+	
+	
 
 	private void paintPlayScreen(Graphics g) {
 		loadWorld();
@@ -129,7 +134,9 @@ public class QbertPanel extends JPanel implements KeyListener {
 		drawEnemy(g);
 		g.drawImage(elevator.get(animationElevator), 536 , 322 ,this);
 		g.drawImage(elevator.get(animationElevator), 682 , 322 ,this);
-		
+		g.drawImage(elevator.get(animationElevator) , 536+contx , 322-conty , this);
+		if(conty%2==0)contx++;
+		conty++;
 		animationElevator=(animationElevator+1)%LIMIT_ELEVATOR;
 	}
 
@@ -222,7 +229,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 	private void drawPlayer(Graphics g) {
 		if(initialQbertIndex==gm.posQbert()) {
 			if(generator==TICK_GENERATE-1) {
-				if(gm.getLevel()<LEV_BONUS)gm.generateBonus();
+				if(gm.getLevel()<LEV_BONUS)gm.generateEnemy();
 				else {
 					Random r =new Random();
 					int prob=r.nextInt(100);
@@ -240,9 +247,29 @@ public class QbertPanel extends JPanel implements KeyListener {
 			if(start) { g.drawImage(getQbertImage(LIFTED_UP),blockPosition.get(initialQbertIndex).getX()+8 , blockPosition.get(initialQbertIndex).getY()-4,this);}
 			else  g.drawImage(getQbertImage(SITTED),blockPosition.get(initialQbertIndex).getX()+8 , blockPosition.get(initialQbertIndex).getY()-4,this);
 			gm.setBlockVisited(initialQbertIndex);
+			if(!gm.checkQbertDeath())
+			{
 			gm.putFactsToComputeTargets();
 			gm.computeBlocksPaths(gm.getQbert(), gm.getFindTarget());
+			}
 			generator=(generator+1)%TICK_GENERATE;
+			if(gm.checkQbertDeath()) {
+				death=(death+1)%DEATH;
+				if(death<DEATH-1) {
+					g.drawImage(deathImage,qbertPosition.getX()+DIM_ASSET, qbertPosition.getY(), this);
+					
+				}
+				else{
+					gm.clearPosition();
+					gm.upgrade();
+					gm.restart();
+					gm.clearConnectors();
+					gm.decrLife();
+					enemyPosition.clear();
+					enemyGraphicPosition.clear();
+					fallenEnemy.clear();
+					start=true;
+				}
 			/*Random r=new Random();
 			if(r.nextInt()%10<2)gm.goDownLeft(gm.getQbert());
 			else if (r.nextInt()%10<5)gm.goDownRight(gm.getQbert());
@@ -252,47 +279,31 @@ public class QbertPanel extends JPanel implements KeyListener {
 		else {
 				start=false;
 				if(gm.getPlayerStatus()==Player.Status.D_LEFT) {
-					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8 && !gm.checkQbertDeath()) qbertPosition.setX(qbertPosition.getX()-1);
-					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4 && !gm.checkQbertDeath()) qbertPosition.setY(qbertPosition.getY()+1);
+					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8 ) qbertPosition.setX(qbertPosition.getX()-1);
+					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4) qbertPosition.setY(qbertPosition.getY()+1);
 					g.drawImage(getQbertImage(LIFTED_UP),qbertPosition.getX()-1, qbertPosition.getY()-1,this);
 					if(blockPosition.get(gm.posQbert()).getX()+8==qbertPosition.getX() && blockPosition.get(gm.posQbert()).getY()-4==qbertPosition.getY() ) initialQbertIndex=gm.posQbert();
 				}
 				if(gm.getPlayerStatus()==Player.Status.D_RIGHT) {
-					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8 && !gm.checkQbertDeath()) qbertPosition.setX(qbertPosition.getX()+1);
-					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4 && !gm.checkQbertDeath()) qbertPosition.setY(qbertPosition.getY()+1);
+					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8) qbertPosition.setX(qbertPosition.getX()+1);
+					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4) qbertPosition.setY(qbertPosition.getY()+1);
 					g.drawImage(getQbertImage(LIFTED_UP),qbertPosition.getX()-1, qbertPosition.getY()-1,this);
 					if(blockPosition.get(gm.posQbert()).getX()+8==qbertPosition.getX() && blockPosition.get(gm.posQbert()).getY()-4==qbertPosition.getY() ) initialQbertIndex=gm.posQbert();
 				}
 				if(gm.getPlayerStatus()==Player.Status.U_RIGHT) {
-					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8 && !gm.checkQbertDeath()) qbertPosition.setX(qbertPosition.getX()+1);
-					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4 && !gm.checkQbertDeath()) qbertPosition.setY(qbertPosition.getY()-1);
+					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8 ) qbertPosition.setX(qbertPosition.getX()+1);
+					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4 ) qbertPosition.setY(qbertPosition.getY()-1);
 					g.drawImage(getQbertImage(LIFTED_UP),qbertPosition.getX()-1, qbertPosition.getY()-1,this);
 					if(blockPosition.get(gm.posQbert()).getX()+8==qbertPosition.getX() && blockPosition.get(gm.posQbert()).getY()-4==qbertPosition.getY() ) initialQbertIndex=gm.posQbert();
 				}
 				if(gm.getPlayerStatus()==Player.Status.U_LEFT) {
-					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8 && !gm.checkQbertDeath()) qbertPosition.setX(qbertPosition.getX()-1);
-					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4 && !gm.checkQbertDeath()) qbertPosition.setY(qbertPosition.getY()-1);
+					if(qbertPosition.getX()!=blockPosition.get(gm.posQbert()).getX()+8 ) qbertPosition.setX(qbertPosition.getX()-1);
+					if(qbertPosition.getY()!=blockPosition.get(gm.posQbert()).getY()-4 ) qbertPosition.setY(qbertPosition.getY()-1);
 					g.drawImage(getQbertImage(LIFTED_UP),qbertPosition.getX()-1, qbertPosition.getY()-1,this);
 					if(blockPosition.get(gm.posQbert()).getX()+8==qbertPosition.getX() && blockPosition.get(gm.posQbert()).getY()-4==qbertPosition.getY() ) initialQbertIndex=gm.posQbert();
 				}
 				}
-		if(gm.checkQbertDeath()) {
-			death=(death+1)%DEATH;
-			if(death<DEATH-1) {
-				g.drawImage(deathImage,qbertPosition.getX()+DIM_ASSET, qbertPosition.getY(), this);
-				
-			}
-			else{
-				gm.clearPosition();
-				gm.upgrade();
-				gm.restart();
-				gm.clearConnectors();
-				gm.decrLife();
-				enemyPosition.clear();
-				enemyGraphicPosition.clear();
-				fallenEnemy.clear();
-				start=true;
-			}}
+		}
 		}
 			
 		
@@ -305,8 +316,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 		if(fallenEnemy.get(p)!=null && fallenEnemy.get(p)) {
 			Position ePosition=enemyGraphicPosition.get(p);
 			if(p.getState()==Player.Status.D_LEFT) {
-				if(!gm.checkQbertDeath())ePosition.setX(ePosition.getX()-1);
-				if(!gm.checkQbertDeath())ePosition.setY(ePosition.getY()+1);
+				ePosition.setX(ePosition.getX()-1);
+				ePosition.setY(ePosition.getY()+1);
 				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
@@ -316,8 +327,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 				if(enemyPosition.get(p)==FALL) { fallenEnemy.put(p,false);}
 			}
 			if(p.getState()==Player.Status.D_RIGHT) {
-				if(!gm.checkQbertDeath())ePosition.setX(ePosition.getX()+1);
-				if(!gm.checkQbertDeath())ePosition.setY(ePosition.getY()+1);
+				ePosition.setX(ePosition.getX()+1);
+				ePosition.setY(ePosition.getY()+1);
 				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
@@ -327,8 +338,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 				if(enemyPosition.get(p)==FALL) { fallenEnemy.remove(p) ; enemyPosition.remove(p) ; enemyGraphicPosition.remove(p);}
 			}
 			if(p.getState()==Player.Status.U_RIGHT) {
-				if(!gm.checkQbertDeath())ePosition.setX(ePosition.getX()+1);
-				if(!gm.checkQbertDeath())ePosition.setY(ePosition.getY()-1);
+				ePosition.setX(ePosition.getX()+1);
+				ePosition.setY(ePosition.getY()-1);
 				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
@@ -338,8 +349,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 				if(enemyPosition.get(p)==FALL) {fallenEnemy.put(p,false);}
 			}
 			if(p.getState()==Player.Status.U_LEFT) {
-				if(!gm.checkQbertDeath())ePosition.setX(ePosition.getX()-1);
-				if(!gm.checkQbertDeath())ePosition.setY(ePosition.getY()-1);
+				ePosition.setX(ePosition.getX()-1);
+				ePosition.setY(ePosition.getY()-1);
 				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
@@ -355,9 +366,11 @@ public class QbertPanel extends JPanel implements KeyListener {
 			else if(p instanceof GreenBall) { g.drawImage(ball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
 			else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
 			else if(p instanceof Snake && !((Snake)p).getStatusHatch()) {g.drawImage(getSnakeImage(p,SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
-			gm.moveEnemy(p);
+
+			if(!gm.checkQbertDeath()) {
+				gm.moveEnemy(p);
 			if (enemyPosition.get(p)==gm.getBlockIndex(p) && p instanceof Snake && ((Snake)p).getStatusHatch() ) { ((Snake)p).hatch(); gm.moveEnemy(p);}
-			else if(enemyPosition.get(p)==gm.getBlockIndex(p) && !gm.checkQbertDeath()) { fallenEnemy.put(p, true); enemyPosition.put(p, 0);}
+			else if(enemyPosition.get(p)==gm.getBlockIndex(p) && !gm.checkQbertDeath()) { fallenEnemy.put(p, true); enemyPosition.put(p, 0);}}
 			/*gm.setBlockVisited(initialQbertIndex);
 			gm.putFactsToComputeTargets();
 			gm.computeBlocksPaths(gm.getQbert());*/
@@ -371,8 +384,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 			if(p instanceof Ball || p instanceof Snake || p instanceof GreenBall || p instanceof GreenMan){
 				Position ePosition=enemyGraphicPosition.get(p);
 				if(p.getState()==Player.Status.D_LEFT) {
-					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 && !gm.checkQbertDeath()) ePosition.setX(ePosition.getX()-1);
-					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 && !gm.checkQbertDeath()) ePosition.setY(ePosition.getY()+1);
+					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 ) ePosition.setX(ePosition.getX()-1);
+					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 ) ePosition.setY(ePosition.getY()+1);
 					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 					else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 					else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
@@ -382,8 +395,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
 				}
 				if(p.getState()==Player.Status.D_RIGHT) {
-					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 && !gm.checkQbertDeath()) ePosition.setX(ePosition.getX()+1);
-					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 && !gm.checkQbertDeath()) ePosition.setY(ePosition.getY()+1);
+					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 ) ePosition.setX(ePosition.getX()+1);
+					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 ) ePosition.setY(ePosition.getY()+1);
 					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 					else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
 					else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
@@ -392,8 +405,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
 				}
 				if(p.getState()==Player.Status.U_RIGHT) {
-					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 && !gm.checkQbertDeath()) ePosition.setX(ePosition.getX()+1);
-					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 && !gm.checkQbertDeath()) ePosition.setY(ePosition.getY()-1);
+					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 ) ePosition.setX(ePosition.getX()+1);
+					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 ) ePosition.setY(ePosition.getY()-1);
 					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 					else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
 					else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
@@ -402,8 +415,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
 				}
 				if(p.getState()==Player.Status.U_LEFT) {
-					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 && !gm.checkQbertDeath()) ePosition.setX(ePosition.getX()-1);
-					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 && !gm.checkQbertDeath()) ePosition.setY(ePosition.getY()-1);
+					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 ) ePosition.setX(ePosition.getX()-1);
+					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 ) ePosition.setY(ePosition.getY()-1);
 					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 					else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
 					else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
@@ -411,9 +424,9 @@ public class QbertPanel extends JPanel implements KeyListener {
 					else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
 				}}
-		}}
+		}}}
 			
-		}
+		
 		
 	
 	private Image getQbertImage(int index) {

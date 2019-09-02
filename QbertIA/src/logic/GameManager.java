@@ -61,6 +61,10 @@ public class GameManager {
 		return qbert.getLife();
 	}
 	
+	public IsometricBlock getAdiacentElevator(int elevator) {
+		return world.IsometricBlockAdiacentToElevator(elevator);
+	}
+	
 	public int posQbert() {
 		return world.blockIndex(position.get(qbert));
 	}

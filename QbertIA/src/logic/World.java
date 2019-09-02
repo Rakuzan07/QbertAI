@@ -153,4 +153,8 @@ public class World {
     public int getElevatorAdiacent(int elevator){
         return elevators[elevator].adjacent.getId();
     }
+    
+    public IsometricBlock IsometricBlockAdiacentToElevator(int elevator) {
+    	return elevators[elevator].adjacent;
+    }
 }

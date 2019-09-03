@@ -267,7 +267,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 			else if (r.nextInt()%10<5)gm.goDownRight(gm.getQbert());
 			else if (r.nextInt()%10<7)gm.goUpRight(gm.getQbert());
 			else gm.goUpLeft(gm.getQbert());*/
-		}
+		}}
 		else {
 				start=false;
 				if(gm.getPlayerStatus()==Player.Status.D_LEFT) {
@@ -296,7 +296,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 				}
 				}
 	}
-		}
+		
 			
 		
 			

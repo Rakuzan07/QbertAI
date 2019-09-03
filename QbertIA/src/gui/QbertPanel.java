@@ -115,6 +115,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 						originx = originx - 16;
 						originy = originy + 24;
 					}
+					System.out.println(gm.numVisit(contBlock)+"  "+gm.getLevel());
 					g.drawImage(block[gm.numVisit(contBlock)], originx + (j * 32), originy, this);
 					if(first)blockPosition.add(new Position(originx + (j * 32), originy));
 				}
@@ -253,6 +254,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 				}
 				else{
 					gm.clearPosition();
+					gm.upgrade();
 					gm.restart();
 					gm.clearConnectors();
 					gm.decrLife();

@@ -11,16 +11,16 @@ public class World {
     
     public World(int visit) {
         blocks = new IsometricBlock[isometricBlockNumber];
-        createBlocks(visit);
+        createBlocks();
         fillIsometricBlocks();
         assignBlocksId();
         elevators[0]=new Elevator(blocks[DEFAULT_ELEVATOR_FAD]);
         elevators[1]=new Elevator(blocks[DEFAULT_ELEVATOR_SAD]);
     }
 
-    private void createBlocks(int visit){
+    private void createBlocks(){
         for (int i = 0; i < isometricBlockNumber; i++) {
-            blocks[i] = new IsometricBlock(visit);
+            blocks[i] = new IsometricBlock();
         }
     }
 

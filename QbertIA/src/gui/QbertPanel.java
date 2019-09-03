@@ -115,7 +115,6 @@ public class QbertPanel extends JPanel implements KeyListener {
 						originx = originx - 16;
 						originy = originy + 24;
 					}
-					System.out.println(gm.numVisit(contBlock)+"  "+gm.getLevel());
 					g.drawImage(block[gm.numVisit(contBlock)], originx + (j * 32), originy, this);
 					if(first)blockPosition.add(new Position(originx + (j * 32), originy));
 				}
@@ -328,7 +327,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 				else if ( p instanceof Snake && ((Snake)p).getStatusHatch() ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				enemyPosition.put(p, enemyPosition.get(p)+1);
-				if(enemyPosition.get(p)==FALL) { fallenEnemy.remove(p) ; enemyPosition.remove(p) ; enemyGraphicPosition.remove(p);}
+				if(enemyPosition.get(p)==FALL) { fallenEnemy.put(p,false); gm.removePlayer(p);}
 			}
 			if(p.getState()==Player.Status.U_RIGHT) {
 				if(!gm.checkQbertDeath())ePosition.setX(ePosition.getX()+1);
@@ -352,6 +351,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 				enemyPosition.put(p, enemyPosition.get(p)+1);
 				if(enemyPosition.get(p)==FALL) { fallenEnemy.put(p,false); gm.removePlayer(p);}
 			}
+			System.out.println(enemyPosition.get(p));
 		}
 		else if(fallenEnemy.get(p)==null&&enemyPosition.get(p)==gm.getBlockIndex(p)) {
 			if(p instanceof Ball) { g.drawImage(ball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}

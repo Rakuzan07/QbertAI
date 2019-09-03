@@ -27,7 +27,7 @@ public class GameManager {
 	
 	public GameManager() {
 		gf=new GameFactory();
-		world=new World();
+		world=new World(2);
 		qbert=gf.createQbert();
 		position.put(qbert, world.getBlock(0));
 		level=1;

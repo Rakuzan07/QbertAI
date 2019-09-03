@@ -9,18 +9,18 @@ public class World {
     private IsometricBlock[] blocks;
     private Elevator[] elevators=new Elevator[NUM_ELEVATOR];
     
-    public World() {
+    public World(int visit) {
         blocks = new IsometricBlock[isometricBlockNumber];
-        createBlocks();
+        createBlocks(visit);
         fillIsometricBlocks();
         assignBlocksId();
         elevators[0]=new Elevator(blocks[DEFAULT_ELEVATOR_FAD]);
         elevators[1]=new Elevator(blocks[DEFAULT_ELEVATOR_SAD]);
     }
 
-    private void createBlocks(){
+    private void createBlocks(int visit){
         for (int i = 0; i < isometricBlockNumber; i++) {
-            blocks[i] = new IsometricBlock();
+            blocks[i] = new IsometricBlock(visit);
         }
     }
 

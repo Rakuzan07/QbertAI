@@ -253,8 +253,6 @@ public class QbertPanel extends JPanel implements KeyListener {
 				}
 				else{
 					gm.clearPosition();
-					gm.upgrade();
-					gm.restart();
 					gm.clearConnectors();
 					gm.decrLife();
 					enemyPosition.clear();

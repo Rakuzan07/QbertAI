@@ -68,6 +68,10 @@ public class GameManager {
 	public int posQbert() {
 		return world.blockIndex(position.get(qbert));
 	}
+	
+	public void removePlayer(Player p) {
+		position.remove(p);
+	}
 	public int moveEnemy(Player p) {
 		if (p instanceof Ball || (p instanceof Snake && ((Snake) p).getStatusHatch()) || p instanceof GreenBall || p instanceof GreenMan) {
 			Random r=new Random();

@@ -317,7 +317,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 				else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				enemyPosition.put(p, enemyPosition.get(p)+1);
-				if(enemyPosition.get(p)==FALL) { fallenEnemy.put(p,false);}
+				if(enemyPosition.get(p)==FALL) { fallenEnemy.put(p,false); gm.removePlayer(p);}
 			}
 			if(p.getState()==Player.Status.D_RIGHT) {
 				if(!gm.checkQbertDeath())ePosition.setX(ePosition.getX()+1);
@@ -339,7 +339,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 				else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				enemyPosition.put(p, enemyPosition.get(p)+1);
-				if(enemyPosition.get(p)==FALL) {fallenEnemy.put(p,false);}
+				if(enemyPosition.get(p)==FALL) {fallenEnemy.put(p,false); gm.removePlayer(p);}
 			}
 			if(p.getState()==Player.Status.U_LEFT) {
 				if(!gm.checkQbertDeath())ePosition.setX(ePosition.getX()-1);
@@ -350,7 +350,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 				else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
 				enemyPosition.put(p, enemyPosition.get(p)+1);
-				if(enemyPosition.get(p)==FALL) { fallenEnemy.put(p,false);}
+				if(enemyPosition.get(p)==FALL) { fallenEnemy.put(p,false); gm.removePlayer(p);}
 			}
 		}
 		else if(fallenEnemy.get(p)==null&&enemyPosition.get(p)==gm.getBlockIndex(p)) {

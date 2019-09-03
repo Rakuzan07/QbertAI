@@ -206,6 +206,7 @@ public class GameManager {
 		int blockpos= world.blockIndex(position.get(qbert));
 		findTarget.putFact("actualPosition("+blockpos+").");
 
+
 		for(Player p: position.keySet())  {
 			if(p!=qbert && (p instanceof Ball || p instanceof Snake)) {
 				blockpos = world.blockIndex(position.get(p));

@@ -2,10 +2,10 @@ isAdjacent(X, 0, Y) :- elevator(X, Y).
 enemyReaches(Y) :- enemy(X), isAdjacent(X, Y, Z).
 inPath(X) :- actualPosition(X).
 inPath(X) | outPath(X) :- inPath(Y), isAdjacent(Y, X, Z).
-:- inPath(X) , enemy(X) .
+:~ inPath(X) , enemy(X) . [1@4, X]
 isTarget(X) | isNotTarget(X) :- inPath(X).
 :- #count{X : isTarget(X)} != 1.
-:~ isTarget(X), painted(X). [1@4, X]
+:- isTarget(X), painted(X).
 :~ inPath(X), painted(X). [1@2, X]
 :~ inPath(X). [1@3, X]
 :- #count{X : positionToTake(X)} != 1.

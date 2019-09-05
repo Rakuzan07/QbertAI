@@ -23,10 +23,12 @@ public class GameManager {
 	private HashMap<Player,IsometricBlock> position=new HashMap<Player,IsometricBlock>();
 	private ASPConnector findTarget;
 	private ASPConnector enemyMovement;
+	private int score;
 	private int level , round ;
 	
 	public GameManager() {
 		gf=new GameFactory();
+		score = 0;
 		world=new World(2);
 		qbert=gf.createQbert();
 		position.put(qbert, world.getBlock(0));
@@ -194,11 +196,27 @@ public class GameManager {
 	
 	public boolean checkQbertDeath() {
 	     for ( Player p : position.keySet()) {
-	    	 if(position.get(qbert)==position.get(p)&&p!=qbert) {
+	    	 if(position.get(qbert) == position.get(p) && p!= qbert && (p instanceof Ball || p instanceof
+					 Snake)) {
 	    		 return true;
 	    	 }
 	     }
 	     return false;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public boolean checkBonusCatched(Player p) {
+		if(position.get(qbert) == position.get(p))
+			return true;
+
+		return false;
 	}
 	
 	public void decrLife() {
@@ -337,7 +355,7 @@ public class GameManager {
 	}
 	
 	public void generateBonus() {
-		int greenManProb=50;
+		int greenManProb=-1;
 		for(Player p : position.keySet()) {
 			if(p instanceof GreenMan) { greenManProb=greenManProb-10; }
 			else if (p instanceof GreenBall) { greenManProb=greenManProb+10;}

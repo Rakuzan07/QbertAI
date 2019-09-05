@@ -24,9 +24,9 @@ import logic.Snake;
 
 public class QbertPanel extends JPanel implements KeyListener {
 
-	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , TICK_GENERATE=32 , FALL=12 , LEV_BONUS=2 , NUM_SPRITE=4 , DEATH=12 , DIM_ASSET=16;
-	private int screenStatus , animationElevator , generator;
-	private boolean first=true , start=true ;
+	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , GREEN_BALL_PAUSE = 2, TICK_GENERATE=16 , FALL=12 , LEV_BONUS=2 , NUM_SPRITE=4 , DEATH=12 , DIM_ASSET=16;
+	private int screenStatus , animationElevator , generator, greenBallCounter;
+	private boolean first=true , start=true, paused = false;
 	private Toolkit tk = Toolkit.getDefaultToolkit();
 	private Image demoScreenBackground;
 	private ArrayList<Image> pressAnyKey = new ArrayList<Image>();
@@ -220,7 +220,13 @@ public class QbertPanel extends JPanel implements KeyListener {
 	}
 	
 	private void drawPlayer(Graphics g) {
+
 		if(initialQbertIndex==gm.posQbert()) {
+			if(paused){
+				greenBallCounter++;
+				if(greenBallCounter == GREEN_BALL_PAUSE)
+					paused = false;
+			}
 			if(generator==TICK_GENERATE-1) {
 				if(gm.getLevel()<LEV_BONUS)gm.generateEnemy();
 				else {
@@ -303,119 +309,279 @@ public class QbertPanel extends JPanel implements KeyListener {
 	
 	private void drawEnemy(Graphics g) {
        for(Player p : enemyPosition.keySet()) {
-		if(fallenEnemy.get(p)!=null && fallenEnemy.get(p)) {
-			Position ePosition=enemyGraphicPosition.get(p);
-			if(p.getState()==Player.Status.D_LEFT) {
-				if(!gm.checkQbertDeath())ePosition.setX(ePosition.getX()-1);
-				if(!gm.checkQbertDeath())ePosition.setY(ePosition.getY()+1);
-				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				enemyPosition.put(p, enemyPosition.get(p)+1);
-				if(enemyPosition.get(p)==FALL) { fallenEnemy.put(p,false); gm.removePlayer(p);}
-			}
-			if(p.getState()==Player.Status.D_RIGHT) {
-				if(!gm.checkQbertDeath())ePosition.setX(ePosition.getX()+1);
-				if(!gm.checkQbertDeath())ePosition.setY(ePosition.getY()+1);
-				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof Snake && ((Snake)p).getStatusHatch() ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				enemyPosition.put(p, enemyPosition.get(p)+1);
-				if(enemyPosition.get(p)==FALL) { fallenEnemy.put(p,false); gm.removePlayer(p);}
-			}
-			if(p.getState()==Player.Status.U_RIGHT) {
-				if(!gm.checkQbertDeath())ePosition.setX(ePosition.getX()+1);
-				if(!gm.checkQbertDeath())ePosition.setY(ePosition.getY()-1);
-				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				enemyPosition.put(p, enemyPosition.get(p)+1);
-				if(enemyPosition.get(p)==FALL) {fallenEnemy.put(p,false); gm.removePlayer(p);}
-			}
-			if(p.getState()==Player.Status.U_LEFT) {
-				if(!gm.checkQbertDeath())ePosition.setX(ePosition.getX()-1);
-				if(!gm.checkQbertDeath())ePosition.setY(ePosition.getY()-1);
-				if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-				enemyPosition.put(p, enemyPosition.get(p)+1);
-				if(enemyPosition.get(p)==FALL) { fallenEnemy.put(p,false); gm.removePlayer(p);}
-			}
-			System.out.println(enemyPosition.get(p));
-		}
-		else if(fallenEnemy.get(p)==null&&enemyPosition.get(p)==gm.getBlockIndex(p)) {
-			if(p instanceof Ball) { g.drawImage(ball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
-			else if ( p instanceof GreenMan) { g.drawImage(getGMSitted(p),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
-			else if(p instanceof GreenBall) { g.drawImage(ball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
-			else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
-			else if(p instanceof Snake && !((Snake)p).getStatusHatch()) {g.drawImage(getSnakeImage(p,SITTED),blockPosition.get(enemyPosition.get(p)).getX()+8 , blockPosition.get(enemyPosition.get(p)).getY()-4,this);}
-			if(!gm.checkQbertDeath()) {
-			gm.moveEnemy(p);
-			if (enemyPosition.get(p)==gm.getBlockIndex(p) && p instanceof Snake && ((Snake)p).getStatusHatch() ) { ((Snake)p).hatch(); gm.moveEnemy(p);}
-			else if(enemyPosition.get(p)==gm.getBlockIndex(p) && !gm.checkQbertDeath()) { fallenEnemy.put(p, true); enemyPosition.put(p, 0);}
-			}
-			/*gm.setBlockVisited(initialQbertIndex);
-			gm.putFactsToComputeTargets();
-			gm.computeBlocksPaths(gm.getQbert());*/
-			/*Random r=new Random();
-			if(r.nextInt()%10<2)gm.goDownLeft();
-			else if (r.nextInt()%10<5)gm.goDownRight();
-			else if (r.nextInt()%10<7)gm.goUpRight();
-			else gm.goUpLeft();*/
-		}
-		else if (fallenEnemy.get(p)==null) {
-			if(p instanceof Ball || p instanceof Snake || p instanceof GreenBall || p instanceof GreenMan){
-				Position ePosition=enemyGraphicPosition.get(p);
-				if(p.getState()==Player.Status.D_LEFT) {
-					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 ) ePosition.setX(ePosition.getX()-1);
-					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 ) ePosition.setY(ePosition.getY()+1);
-					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof Snake && ((Snake)p).getStatusHatch() ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
-				}
-				if(p.getState()==Player.Status.D_RIGHT) {
-					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 ) ePosition.setX(ePosition.getX()+1);
-					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 ) ePosition.setY(ePosition.getY()+1);
-					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof Snake && ((Snake)p).getStatusHatch() ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
-				}
-				if(p.getState()==Player.Status.U_RIGHT) {
-					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 ) ePosition.setX(ePosition.getX()+1);
-					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 ) ePosition.setY(ePosition.getY()-1);
-					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof Snake && ((Snake)p).getStatusHatch()) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
-				}
-				if(p.getState()==Player.Status.U_LEFT) {
-					if(ePosition.getX()!=blockPosition.get(gm.getBlockIndex(p)).getX()+8 ) ePosition.setX(ePosition.getX()-1);
-					if(ePosition.getY()!=blockPosition.get(gm.getBlockIndex(p)).getY()-4 ) ePosition.setY(ePosition.getY()-1);
-					if(p instanceof Ball) { g.drawImage(ball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof GreenMan) { g.drawImage(getGMImage(p),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof GreenBall) { g.drawImage(greenBall.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if ( p instanceof Snake && ((Snake)p).getStatusHatch() ) { g.drawImage(snakeball.get(LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					else if( p instanceof Snake && !((Snake)p).getStatusHatch()) { g.drawImage(getSnakeImage(p,LIFTED_UP),ePosition.getX()-1, ePosition.getY()-1,this);}
-					if(blockPosition.get(gm.getBlockIndex(p)).getX()+8==ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY()-4==ePosition.getY() ) enemyPosition.put(p,gm.getBlockIndex(p));
-				}}
-		}}
+		   if (paused) {
+		   	if(p != gm.getQbert() && fallenEnemy.get(p) == null){
+				   Position ePosition = enemyGraphicPosition.get(p);
+				   if (p instanceof Ball) {
+					   if (enemyPosition.get(p) != gm.getBlockIndex(p))
+						   g.drawImage(ball.get(LIFTED_UP), ePosition.getX(), ePosition.getY(), this);
+					   else
+						   g.drawImage(ball.get(SITTED), ePosition.getX(), ePosition.getY(), this);
+				   } else if (p instanceof GreenBall) {
+					   if (enemyPosition.get(p) != gm.getBlockIndex(p))
+						   g.drawImage(greenBall.get(LIFTED_UP), ePosition.getX(), ePosition.getY(), this);
+					   else
+						   g.drawImage(greenBall.get(SITTED), ePosition.getX(), ePosition.getY(), this);
+				   } else if (p instanceof GreenMan) {
+					   if (enemyPosition.get(p) != gm.getBlockIndex(p))
+						   g.drawImage(getGMImage(p), ePosition.getX(), ePosition.getY(), this);
+					   else
+						   g.drawImage(getGMSitted(p), ePosition.getX(), ePosition.getY(), this);
+				   } else if (p instanceof Snake && ((Snake) p).getStatusHatch()) {
+					   if (enemyPosition.get(p) != gm.getBlockIndex(p))
+						   g.drawImage(snakeball.get(LIFTED_UP), ePosition.getX(), ePosition.getY(), this);
+					   else
+						   g.drawImage(snakeball.get(SITTED), ePosition.getX(), ePosition.getY(), this);
+				   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
+					   if (enemyPosition.get(p) != gm.getBlockIndex(p))
+						   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX(), ePosition.getY(), this);
+					   else
+						   g.drawImage(getSnakeImage(p, SITTED), ePosition.getX(), ePosition.getY(), this);
+				   }
+			   }
+		   } else {
+			   if (fallenEnemy.get(p) != null && fallenEnemy.get(p)) {
+				   Position ePosition = enemyGraphicPosition.get(p);
+				   if (p.getState() == Player.Status.D_LEFT) {
+					   if (!gm.checkQbertDeath()) ePosition.setX(ePosition.getX() - 1);
+					   if (!gm.checkQbertDeath()) ePosition.setY(ePosition.getY() + 1);
+					   if (p instanceof Ball) {
+						   g.drawImage(ball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof GreenBall) {
+						   g.drawImage(greenBall.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof GreenMan) {
+						   g.drawImage(getGMImage(p), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof Snake && ((Snake) p).getStatusHatch()) {
+						   g.drawImage(snakeball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
+						   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   }
+					   enemyPosition.put(p, enemyPosition.get(p) + 1);
+					   if (enemyPosition.get(p) == FALL) {
+						   fallenEnemy.put(p, false);
+						   gm.removePlayer(p);
+					   }
+				   }
+				   if (p.getState() == Player.Status.D_RIGHT) {
+					   if (!gm.checkQbertDeath()) ePosition.setX(ePosition.getX() + 1);
+					   if (!gm.checkQbertDeath()) ePosition.setY(ePosition.getY() + 1);
+					   if (p instanceof Ball) {
+						   g.drawImage(ball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof GreenBall) {
+						   g.drawImage(greenBall.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof GreenMan) {
+						   g.drawImage(getGMImage(p), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof Snake && ((Snake) p).getStatusHatch()) {
+						   g.drawImage(snakeball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
+						   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   }
+					   enemyPosition.put(p, enemyPosition.get(p) + 1);
+					   if (enemyPosition.get(p) == FALL) {
+						   fallenEnemy.put(p, false);
+						   gm.removePlayer(p);
+					   }
+				   }
+				   if (p.getState() == Player.Status.U_RIGHT) {
+					   if (!gm.checkQbertDeath()) ePosition.setX(ePosition.getX() + 1);
+					   if (!gm.checkQbertDeath()) ePosition.setY(ePosition.getY() - 1);
+					   if (p instanceof Ball) {
+						   g.drawImage(ball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof GreenBall) {
+						   g.drawImage(greenBall.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof GreenMan) {
+						   g.drawImage(getGMImage(p), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof Snake && ((Snake) p).getStatusHatch()) {
+						   g.drawImage(snakeball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
+						   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   }
+					   enemyPosition.put(p, enemyPosition.get(p) + 1);
+					   if (enemyPosition.get(p) == FALL) {
+						   fallenEnemy.put(p, false);
+						   gm.removePlayer(p);
+					   }
+				   }
+				   if (p.getState() == Player.Status.U_LEFT) {
+					   if (!gm.checkQbertDeath()) ePosition.setX(ePosition.getX() - 1);
+					   if (!gm.checkQbertDeath()) ePosition.setY(ePosition.getY() - 1);
+					   if (p instanceof Ball) {
+						   g.drawImage(ball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof GreenBall) {
+						   g.drawImage(greenBall.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof GreenMan) {
+						   g.drawImage(getGMImage(p), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof Snake && ((Snake) p).getStatusHatch()) {
+						   g.drawImage(snakeball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
+						   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+					   }
+					   enemyPosition.put(p, enemyPosition.get(p) + 1);
+					   if (enemyPosition.get(p) == FALL) {
+						   fallenEnemy.put(p, false);
+						   gm.removePlayer(p);
+					   }
+				   }
+			   } else if (fallenEnemy.get(p) == null && enemyPosition.get(p) == gm.getBlockIndex(p)) {
+				   if (p instanceof Ball) {
+					   g.drawImage(ball.get(SITTED), blockPosition.get(enemyPosition.get(p)).getX() + 8, blockPosition.get(enemyPosition.get(p)).getY() - 4, this);
+				   } else if (p instanceof GreenMan) {
+					   g.drawImage(getGMSitted(p), blockPosition.get(enemyPosition.get(p)).getX() + 8, blockPosition.get(enemyPosition.get(p)).getY() - 4, this);
+				   } else if (p instanceof GreenBall) {
+					   g.drawImage(greenBall.get(SITTED), blockPosition.get(enemyPosition.get(p)).getX() + 8, blockPosition.get(enemyPosition.get(p)).getY() - 4, this);
+				   } else if (p instanceof Snake && ((Snake) p).getStatusHatch()) {
+					   g.drawImage(snakeball.get(SITTED), blockPosition.get(enemyPosition.get(p)).getX() + 8, blockPosition.get(enemyPosition.get(p)).getY() - 4, this);
+				   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
+					   g.drawImage(getSnakeImage(p, SITTED), blockPosition.get(enemyPosition.get(p)).getX() + 8, blockPosition.get(enemyPosition.get(p)).getY() - 4, this);
+				   }
+
+				   if (!gm.checkQbertDeath()) {
+					   gm.moveEnemy(p);
+					   if (enemyPosition.get(p) == gm.getBlockIndex(p) && p instanceof Snake && ((Snake) p).getStatusHatch()) {
+						   ((Snake) p).hatch();
+						   gm.moveEnemy(p);
+					   } else if (enemyPosition.get(p) == gm.getBlockIndex(p) && !gm.checkQbertDeath()) {
+						   fallenEnemy.put(p, true);
+						   enemyPosition.put(p, 0);
+					   }
+				   }
+				/*gm.setBlockVisited(initialQbertIndex);
+				gm.putFactsToComputeTargets();
+				gm.computeBlocksPaths(gm.getQbert());*/
+				/*Random r=new Random();
+				if(r.nextInt()%10<2)gm.goDownLeft();
+				else if (r.nextInt()%10<5)gm.goDownRight();
+				else if (r.nextInt()%10<7)gm.goUpRight();
+				else gm.goUpLeft();*/
+			   } else if (fallenEnemy.get(p) == null) {
+				   if (p instanceof Ball || p instanceof Snake || p instanceof GreenBall || p instanceof GreenMan) {
+					   Position ePosition = enemyGraphicPosition.get(p);
+					   if (p.getState() == Player.Status.D_LEFT) {
+						   if (ePosition.getX() != blockPosition.get(gm.getBlockIndex(p)).getX() + 8)
+							   ePosition.setX(ePosition.getX() - 1);
+						   if (ePosition.getY() != blockPosition.get(gm.getBlockIndex(p)).getY() - 4)
+							   ePosition.setY(ePosition.getY() + 1);
+						   if (p instanceof Ball) {
+							   g.drawImage(ball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof GreenBall) {
+							   g.drawImage(greenBall.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof GreenMan) {
+							   g.drawImage(getGMImage(p), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof Snake && ((Snake) p).getStatusHatch()) {
+							   g.drawImage(snakeball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof GreenBall) {
+							   g.drawImage(greenBall.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
+							   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   }
+						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
+							   enemyPosition.put(p, gm.getBlockIndex(p));
+							   if (gm.checkBonusCatched(p) && (p instanceof GreenBall || p instanceof GreenMan)) {
+								   if (p instanceof GreenMan) {
+									   gm.setScore(gm.getScore() + 300);
+								   } else if (p instanceof GreenBall) {
+									   paused = true;
+									   greenBallCounter = 0;
+								   }
+								   fallenEnemy.put(p, false);
+								   gm.removePlayer(p);
+							   }
+						   }
+					   }
+					   if (p.getState() == Player.Status.D_RIGHT) {
+						   if (ePosition.getX() != blockPosition.get(gm.getBlockIndex(p)).getX() + 8)
+							   ePosition.setX(ePosition.getX() + 1);
+						   if (ePosition.getY() != blockPosition.get(gm.getBlockIndex(p)).getY() - 4)
+							   ePosition.setY(ePosition.getY() + 1);
+						   if (p instanceof Ball) {
+							   g.drawImage(ball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof GreenMan) {
+							   g.drawImage(getGMImage(p), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof GreenBall) {
+							   g.drawImage(greenBall.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof Snake && ((Snake) p).getStatusHatch()) {
+							   g.drawImage(snakeball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
+							   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   }
+						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
+							   enemyPosition.put(p, gm.getBlockIndex(p));
+							   if (gm.checkBonusCatched(p) && (p instanceof GreenBall || p instanceof GreenMan)) {
+								   if (p instanceof GreenMan) {
+									   gm.setScore(gm.getScore() + 300);
+								   } else if (p instanceof GreenBall) {
+									   paused = true;
+									   greenBallCounter = 0;
+								   }
+								   fallenEnemy.put(p, false);
+								   gm.removePlayer(p);
+							   }
+						   }
+					   }
+					   if (p.getState() == Player.Status.U_RIGHT) {
+						   if (ePosition.getX() != blockPosition.get(gm.getBlockIndex(p)).getX() + 8)
+							   ePosition.setX(ePosition.getX() + 1);
+						   if (ePosition.getY() != blockPosition.get(gm.getBlockIndex(p)).getY() - 4)
+							   ePosition.setY(ePosition.getY() - 1);
+						   if (p instanceof Ball) {
+							   g.drawImage(ball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof GreenMan) {
+							   g.drawImage(getGMImage(p), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof GreenBall) {
+							   g.drawImage(greenBall.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof Snake && ((Snake) p).getStatusHatch()) {
+							   g.drawImage(snakeball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
+							   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   }
+						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
+							   enemyPosition.put(p, gm.getBlockIndex(p));
+							   if (gm.checkBonusCatched(p) && (p instanceof GreenBall || p instanceof GreenMan)) {
+								   if (p instanceof GreenMan) {
+									   gm.setScore(gm.getScore() + 300);
+								   } else if (p instanceof GreenBall) {
+									   paused = true;
+									   greenBallCounter = 0;
+								   }
+								   fallenEnemy.put(p, false);
+								   gm.removePlayer(p);
+							   }
+						   }
+					   }
+					   if (p.getState() == Player.Status.U_LEFT) {
+						   if (ePosition.getX() != blockPosition.get(gm.getBlockIndex(p)).getX() + 8)
+							   ePosition.setX(ePosition.getX() - 1);
+						   if (ePosition.getY() != blockPosition.get(gm.getBlockIndex(p)).getY() - 4)
+							   ePosition.setY(ePosition.getY() - 1);
+						   if (p instanceof Ball) {
+							   g.drawImage(ball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof GreenMan) {
+							   g.drawImage(getGMImage(p), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof GreenBall) {
+							   g.drawImage(greenBall.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof Snake && ((Snake) p).getStatusHatch()) {
+							   g.drawImage(snakeball.get(LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
+							   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
+						   }
+						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
+							   enemyPosition.put(p, gm.getBlockIndex(p));
+							   if (gm.checkBonusCatched(p) && (p instanceof GreenBall || p instanceof GreenMan)) {
+								   if (p instanceof GreenMan) {
+									   gm.setScore(gm.getScore() + 300);
+								   } else if (p instanceof GreenBall) {
+									   paused = true;
+									   greenBallCounter = 0;
+								   }
+								   fallenEnemy.put(p, false);
+								   gm.removePlayer(p);
+							   }
+						   }
+					   }
+				   }
+			   }
+		   }
+	   }
 			
 		}
 		

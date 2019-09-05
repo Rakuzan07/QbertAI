@@ -1,4 +1,5 @@
 isAdjacent(X, 0, Y) :- elevator(X, Y).
+enemyReaches(Y) :- enemy(X), isAdjacent(X, Y, Z).
 inPath(X) :- actualPosition(X).
 inPath(X) | outPath(X) :- inPath(Y), isAdjacent(Y, X, Z).
 :- inPath(X) , enemy(X) .
@@ -11,4 +12,5 @@ isTarget(X) | isNotTarget(X) :- inPath(X).
 :- isTarget(X), actualPosition(X).
 :~ inPath(X), not greenMan(X). [1@1, X]
 :~ inPath(X), not greenBall(X). [1@1, X]
+:- inPath(X), actualPosition(Y), isAdjacent(Y, X, G), enemyReaches(X).
 positionToTake(G) :- inPath(X), actualPosition(Y), isAdjacent(Y, X, G).

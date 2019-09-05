@@ -5,12 +5,12 @@ inPath(X) | outPath(X) :- inPath(Y), isAdjacent(Y, X, Z).
 :- inPath(X) , enemy(X) .
 isTarget(X) | isNotTarget(X) :- inPath(X).
 :- #count{X : isTarget(X)} != 1.
-:- isTarget(X), painted(X).
+:~ isTarget(X), painted(X). [1@4, X]
 :~ inPath(X), painted(X). [1@2, X]
 :~ inPath(X). [1@3, X]
 :- #count{X : positionToTake(X)} != 1.
 :- isTarget(X), actualPosition(X).
 :~ inPath(X), not greenMan(X). [1@1, X]
 :~ inPath(X), not greenBall(X). [1@1, X]
-:- inPath(X), actualPosition(Y), isAdjacent(Y, X, G), enemyReaches(X).
+:~ inPath(X), actualPosition(Y), isAdjacent(Y, X, G), enemyReaches(X). [1@5, X]
 positionToTake(G) :- inPath(X), actualPosition(Y), isAdjacent(Y, X, G).

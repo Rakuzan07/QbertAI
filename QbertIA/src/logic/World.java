@@ -2,7 +2,7 @@ package logic;
 
 public class World {
 
-	public static final int NUM_ELEVATOR=2;
+	public static final int NUM_ELEVATOR=2 , EL_LEFT=0 , EL_RIGHT=1;
 	private static final int DEFAULT_ELEVATOR_FAD=6 , DEFAULT_ELEVATOR_SAD=9;
     private int isometricBlockNumber = 28;
     private int blockLevels = 7;
@@ -148,6 +148,14 @@ public class World {
     
     public void setElevatorAdiacent(int elevator , int adiacent) {
     	elevators[elevator]=new Elevator(blocks[adiacent]);
+    }
+    
+    public boolean isElevatorVisited(int elevator) {
+    	return elevators[elevator].isVisited();
+    	}
+    
+    public void setElevatorVisited(int elevator) {
+    	elevators[elevator].visit();
     }
 
     public int getElevatorAdiacent(int elevator){

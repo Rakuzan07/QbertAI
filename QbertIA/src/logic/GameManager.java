@@ -51,6 +51,9 @@ public class GameManager {
          return world.getNumLevel();
 	}
 	
+	public void initializeQbert() {
+		position.put(qbert, world.getBlock(0));
+	}
 	public int getLevel() {
 		return level;
 	}
@@ -129,6 +132,10 @@ public class GameManager {
 			computeBlocksPaths(p, enemyMovement);
 		}
 		return -1;
+	}
+	
+	public World getWorld() {
+		return world;
 	}
 	
 	public int getBlockIndex(Player p) {
@@ -390,5 +397,13 @@ public class GameManager {
 			round=1;
 		}
 	}
+	
+	public void setElevatorVisited(int elevator) {
+    	world.setElevatorVisited(elevator);
+    }
+
+    public boolean isElevatorVisited(int elevator) {
+    	return world.isElevatorVisited(elevator);
+    	}
 	
 }

@@ -309,24 +309,25 @@ public class QbertPanel extends JPanel implements KeyListener {
 	
 	
 	public void animationElevator(Graphics g) {
-		if(gm.getPlayerStatus()==Player.Status.U_LEFT&&qbertPosition.getX()!=ELEVATOR1_X) qbertPosition.setX(qbertPosition.getX()-1);
-		if(gm.getPlayerStatus()==Player.Status.U_LEFT&&qbertPosition.getY()!=ELEVATOR1_Y-10) qbertPosition.setX(qbertPosition.getX()+1);
+		if(gm.getPlayerStatus()==Player.Status.U_LEFT&&qbertPosition.getX()!=ELEVATOR1_X) qbertPosition.setX(qbertPosition.getX() - 1);
+		if(gm.getPlayerStatus()==Player.Status.U_LEFT&&qbertPosition.getY()!=ELEVATOR1_Y-10) qbertPosition.setY(qbertPosition.getY()-1);
 		if(gm.getPlayerStatus()==Player.Status.U_RIGHT&&qbertPosition.getX()!=ELEVATOR2_X) qbertPosition.setX(qbertPosition.getX()+1);
-		if(gm.getPlayerStatus()==Player.Status.U_RIGHT&&qbertPosition.getX()!=ELEVATOR2_Y-10) qbertPosition.setY(qbertPosition.getY()+1);
+		if(gm.getPlayerStatus()==Player.Status.U_RIGHT&&qbertPosition.getX()!=ELEVATOR2_Y-10) qbertPosition.setY(qbertPosition.getY()-1);
 		if(gm.getPlayerStatus()==Player.Status.U_LEFT&&qbertPosition.getX()==ELEVATOR1_X && qbertPosition.getY()==ELEVATOR1_Y-10 ) {
-			if(ELEVATOR_OX>el_leftx+1) { 
+			gm.setElevatorVisited(World.EL_LEFT);
+			if(ELEVATOR_OX>el_leftx+1) {
 				if((ELEVATOR_OX-el_leftx)>50) { el_leftx++; }
 				else { el_leftx=el_leftx+2; }}
 		    if(ELEVATOR_OY<el_lefty-1) { el_lefty=el_lefty-2;}
-		    if(ELEVATOR_OX<el_leftx+1||ELEVATOR_OY>el_lefty-1) {
+		    if(ELEVATOR_OX>el_leftx+1||ELEVATOR_OY<el_lefty-1) {
 		    g.drawImage(elevator.get(animationElevator), el_leftx , el_lefty , this);
 		    g.drawImage(u_right.get(LIFTED_UP), qbertPosition.getX()+(el_leftx-ELEVATOR1_X) , qbertPosition.getY()-(ELEVATOR1_Y-el_lefty), this);}
-		    if(ELEVATOR_OX>el_leftx+1&&ELEVATOR_OY<el_lefty-1) {
-		    	gm.setElevatorVisited(World.EL_LEFT);
-		    	if(tox!=blockPosition.get(0).getX()+8 ) tox++;
+		    if(ELEVATOR_OX<el_leftx+1&&ELEVATOR_OY>el_lefty-1) {
+		    	if(tox!=blockPosition.get(0).getX()+8 ) tox--;
 				if(toy!=blockPosition.get(0).getY()-4 ) toy++;
-				if(tox!=blockPosition.get(0).getX()+8&&toy!=blockPosition.get(0).getY()-4)g.drawImage(getQbertImage(LIFTED_UP),tox, toy,this);
+				if(tox!=blockPosition.get(0).getX()+8 || toy!=blockPosition.get(0).getY()-4)g.drawImage(getQbertImage(LIFTED_UP),tox, toy,this);
 				else {
+					g.drawImage(getQbertImage(LIFTED_UP),tox, toy,this);
 					qbertPosition.setX(tox);
 					qbertPosition.setY(toy);
 					initialQbertIndex=0;
@@ -338,19 +339,20 @@ public class QbertPanel extends JPanel implements KeyListener {
 		    return;
 		}
 		else if(gm.getPlayerStatus()==Player.Status.U_RIGHT&&qbertPosition.getX()==ELEVATOR2_X && qbertPosition.getY()==ELEVATOR2_Y-10) {
-			if(ELEVATOR_OX<el_rightx-1) { 
+			gm.setElevatorVisited(World.EL_RIGHT);
+			if(ELEVATOR_OX<el_rightx-1) {
 				if((el_rightx-ELEVATOR_OX)>50) { el_rightx--; qbertPosition.setX(qbertPosition.getX()-1);}
 				else { el_rightx=el_rightx-2; qbertPosition.setX(qbertPosition.getX()-2);}}
 		    if(ELEVATOR_OY<el_righty-1) { el_righty=el_righty-2; qbertPosition.setY(qbertPosition.getY()-2);}
-		    if(ELEVATOR_OX<el_rightx+1||ELEVATOR_OY>el_righty-1) { 
+		    if(ELEVATOR_OX<el_rightx+1||ELEVATOR_OY<el_righty-1) {
 		    g.drawImage(elevator.get(animationElevator), el_rightx , el_righty , this);
 		    g.drawImage(u_left.get(LIFTED_UP), qbertPosition.getX()-(ELEVATOR1_X-el_rightx) , qbertPosition.getY()-(ELEVATOR1_Y-el_righty), this);}
-		    if(ELEVATOR_OX>el_rightx+1&&ELEVATOR_OY<el_righty-1) {
-		    	gm.setElevatorVisited(World.EL_RIGHT);
-		    	if(tox!=blockPosition.get(0).getX()+8 ) tox++;
+		    if(ELEVATOR_OX<el_rightx+1&&ELEVATOR_OY>el_righty-1) {
+		    	if(tox!=blockPosition.get(0).getX()+8 ) tox--;
 				if(toy!=blockPosition.get(0).getY()-4 ) toy++;
-				if(tox!=blockPosition.get(0).getX()+8&&toy!=blockPosition.get(0).getY()-4)g.drawImage(getQbertImage(LIFTED_UP),tox, toy,this);
+				if(tox!=blockPosition.get(0).getX()+8 || toy!=blockPosition.get(0).getY()-4)g.drawImage(getQbertImage(LIFTED_UP),tox, toy,this);
 				else {
+					g.drawImage(getQbertImage(LIFTED_UP),tox, toy,this);
 					qbertPosition.setX(tox);
 					qbertPosition.setY(toy);
 					initialQbertIndex=0;

@@ -58,6 +58,10 @@ public class GameManager {
 		return level;
 	}
 	
+	public boolean isQbertOnElevator() {
+		return position.get(qbert)==null;
+	}
+	
 	public int getRound() {
 		return round;
 	}

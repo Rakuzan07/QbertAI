@@ -64,6 +64,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 		gm.putFactsToComputeTargets();
 
 	}
+	
+	
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -221,8 +223,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 	}
 	
 	private void drawPlayer(Graphics g) {
-        if(gm.posQbert()==-1) {
-        	
+        if(gm.isQbertOnElevator()) {
+        	animationElevator(g);
         }
         else {
 		if(initialQbertIndex==gm.posQbert()) {

@@ -349,7 +349,7 @@ public class GameManager {
     }
     
 	public void generateEnemy() {
-		int ballprob=1000;
+		int ballprob=50;
 		for(Player p : position.keySet()) {
 			if(p instanceof Snake) { ballprob=ballprob+10; }
 			else if (p instanceof Ball) { ballprob=ballprob-10;}

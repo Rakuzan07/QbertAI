@@ -312,7 +312,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 		if(gm.getPlayerStatus()==Player.Status.U_LEFT&&qbertPosition.getX()!=ELEVATOR1_X) qbertPosition.setX(qbertPosition.getX() - 1);
 		if(gm.getPlayerStatus()==Player.Status.U_LEFT&&qbertPosition.getY()!=ELEVATOR1_Y-10) qbertPosition.setY(qbertPosition.getY()-1);
 		if(gm.getPlayerStatus()==Player.Status.U_RIGHT&&qbertPosition.getX()!=ELEVATOR2_X) qbertPosition.setX(qbertPosition.getX()+1);
-		if(gm.getPlayerStatus()==Player.Status.U_RIGHT&&qbertPosition.getX()!=ELEVATOR2_Y-10) qbertPosition.setY(qbertPosition.getY()-1);
+		if(gm.getPlayerStatus()==Player.Status.U_RIGHT&&qbertPosition.getY()!=ELEVATOR2_Y-10) qbertPosition.setY(qbertPosition.getY()-1);
 		if(gm.getPlayerStatus()==Player.Status.U_LEFT&&qbertPosition.getX()==ELEVATOR1_X && qbertPosition.getY()==ELEVATOR1_Y-10 ) {
 			gm.setElevatorVisited(World.EL_LEFT);
 			if(ELEVATOR_OX>el_leftx+1) {
@@ -339,15 +339,15 @@ public class QbertPanel extends JPanel implements KeyListener {
 		    return;
 		}
 		else if(gm.getPlayerStatus()==Player.Status.U_RIGHT&&qbertPosition.getX()==ELEVATOR2_X && qbertPosition.getY()==ELEVATOR2_Y-10) {
-			gm.setElevatorVisited(World.EL_RIGHT);
-			if(ELEVATOR_OX<el_rightx-1) {
-				if((el_rightx-ELEVATOR_OX)>50) { el_rightx--; qbertPosition.setX(qbertPosition.getX()-1);}
-				else { el_rightx=el_rightx-2; qbertPosition.setX(qbertPosition.getX()-2);}}
-		    if(ELEVATOR_OY<el_righty-1) { el_righty=el_righty-2; qbertPosition.setY(qbertPosition.getY()-2);}
-		    if(ELEVATOR_OX<el_rightx+1||ELEVATOR_OY<el_righty-1) {
+		    gm.setElevatorVisited(World.EL_RIGHT);
+			if(ELEVATOR_OX<el_rightx) {
+				if((el_rightx-ELEVATOR_OX)>50) { el_rightx--;}
+				else { el_rightx=el_rightx-2;}}
+		    if(ELEVATOR_OY<el_righty-1) { el_righty=el_righty-2;}
+		    if(ELEVATOR_OX<el_rightx ||ELEVATOR_OY<el_righty-1) {
 		    g.drawImage(elevator.get(animationElevator), el_rightx , el_righty , this);
-		    g.drawImage(u_left.get(LIFTED_UP), qbertPosition.getX()-(ELEVATOR1_X-el_rightx) , qbertPosition.getY()-(ELEVATOR1_Y-el_righty), this);}
-		    if(ELEVATOR_OX<el_rightx+1&&ELEVATOR_OY>el_righty-1) {
+		    g.drawImage(u_left.get(LIFTED_UP), qbertPosition.getX()-(ELEVATOR2_X-el_rightx) , qbertPosition.getY()-(ELEVATOR2_Y-el_righty), this);}
+		    if(ELEVATOR_OX>el_rightx&&ELEVATOR_OY>el_righty-1) {
 		    	if(tox!=blockPosition.get(0).getX()+8 ) tox--;
 				if(toy!=blockPosition.get(0).getY()-4 ) toy++;
 				if(tox!=blockPosition.get(0).getX()+8 || toy!=blockPosition.get(0).getY()-4)g.drawImage(getQbertImage(LIFTED_UP),tox, toy,this);

@@ -255,13 +255,13 @@ public class GameManager {
 
 		findTarget.putFact("painted(0).");
 
-		/*for (int i = 0; i < World.NUM_ELEVATOR; i++) {
+		for (int i = 0; i < World.NUM_ELEVATOR; i++) {
 			int elevatorAdiacent = world.getElevatorAdiacent(i);
 			if(world.getBlock(elevatorAdiacent).getAdiacentUpRight() == null)
 				findTarget.putFact("elevator(" + elevatorAdiacent + ", UR).");
 			else
 				findTarget.putFact("elevator(" + elevatorAdiacent + ", UL).");
-		}*/
+		}
 
 		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
 			if(world.isVisited(i))findTarget.putFact("painted("+i+").");

@@ -152,6 +152,7 @@ public class GameManager {
 		if(temp_pos.getAdiacentDownLeft()!=null){
 			position.put(p, temp_pos.getAdiacentDownLeft());
 		}
+		if(p==qbert && temp_pos.getAdiacentDownLeft()==null) position.put(p, null);
 		return world.blockIndex(temp_pos);
 	}
 	
@@ -161,6 +162,7 @@ public class GameManager {
 		if(temp_pos.getAdiacentDownRight()!=null){
 			position.put(p, temp_pos.getAdiacentDownRight());
 		}
+		if(p==qbert && temp_pos.getAdiacentDownRight()==null) position.put(p, null);
 		return world.blockIndex(temp_pos);
 	}
 	
@@ -170,6 +172,7 @@ public class GameManager {
 		if(temp_pos.getAdiacentUpLeft()!=null){
 			position.put(p, temp_pos.getAdiacentUpLeft());
 		}
+		if(p==qbert && temp_pos.getAdiacentUpLeft()==null) position.put(p, null);
 		return world.blockIndex(temp_pos);
 	}
 	
@@ -179,6 +182,7 @@ public class GameManager {
 		if(temp_pos.getAdiacentUpRight()!=null){
 			position.put(p, temp_pos.getAdiacentUpRight());
 		}
+		if(p==qbert && temp_pos.getAdiacentUpRight()==null) position.put(p, null);
 		return world.blockIndex(temp_pos);
 	}
 	

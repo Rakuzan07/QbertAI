@@ -343,11 +343,11 @@ public class QbertPanel extends JPanel implements KeyListener {
 			if(ELEVATOR_OX<el_rightx) {
 				if((el_rightx-ELEVATOR_OX)>50) { el_rightx--;}
 				else { el_rightx=el_rightx-2;}}
-		    if(ELEVATOR_OY<el_righty-1) { el_righty=el_righty-2;}
-		    if(ELEVATOR_OX<el_rightx ||ELEVATOR_OY<el_righty-1) {
+		    if(ELEVATOR_OY<el_righty) { el_righty=el_righty-2;}
+		    if(ELEVATOR_OX<el_rightx ||ELEVATOR_OY<el_righty) {
 		    g.drawImage(elevator.get(animationElevator), el_rightx , el_righty , this);
 		    g.drawImage(u_left.get(LIFTED_UP), qbertPosition.getX()-(ELEVATOR2_X-el_rightx) , qbertPosition.getY()-(ELEVATOR2_Y-el_righty), this);}
-		    if(ELEVATOR_OX>el_rightx&&ELEVATOR_OY>el_righty-1) {
+		    if(ELEVATOR_OX>el_rightx&&ELEVATOR_OY>el_righty) {
 		    	if(tox!=blockPosition.get(0).getX()+8 ) tox--;
 				if(toy!=blockPosition.get(0).getY()-4 ) toy++;
 				if(tox!=blockPosition.get(0).getX()+8 || toy!=blockPosition.get(0).getY()-4)g.drawImage(getQbertImage(LIFTED_UP),tox, toy,this);

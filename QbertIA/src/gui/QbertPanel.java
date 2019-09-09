@@ -32,7 +32,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 	private Image demoScreenBackground;
 	private ArrayList<Image> pressAnyKey = new ArrayList<Image>();
 	private int indexPAK = 0 , animationRow=0 , animationGreenMan=0 , death ;
-	private Image changeto, level, round, row1, row2, life, change , nlevel , nround , logo , deathImage;
+	private Image changeto, level, round, row1, row2, life, change , nlevel , nround , logo , deathImage , gameover;
 	private Image[] block;
 	private ArrayList<Image> d_right , d_left , u_right , u_left , snake_d_right , snake_d_left , snake_u_right , snake_u_left , gm_d_left , gm_d_right ;
 	private GameManager gm;
@@ -129,8 +129,11 @@ public class QbertPanel extends JPanel implements KeyListener {
 		}
 		if(first) qbertPosition=new Position(blockPosition.get(initialQbertIndex).getX(),blockPosition.get(initialQbertIndex).getY());
 		first=false;
+		if(gm.getQbertLife()==0)g.drawImage(gameover, 588, 320, this);
+		else {
 		drawPlayer(g);
 		drawEnemy(g);
+		}
 		if(!gm.isElevatorVisited(World.EL_LEFT))g.drawImage(elevator.get(animationElevator), ELEVATOR1_X , ELEVATOR1_Y ,this);
 		if(!gm.isElevatorVisited(World.EL_RIGHT))g.drawImage(elevator.get(animationElevator), ELEVATOR2_X , ELEVATOR2_Y ,this);
 		animationElevator=(animationElevator+1)%LIMIT_ELEVATOR;
@@ -147,6 +150,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 			gm.resetWorld();
 			gm.clearConnectors();
 			block=new Image[gm.getLevel()+1];
+			nround= tk.getImage(this.getClass().getResource("resources//play//"+gm.getLevel()+".png"));
+		    nlevel= tk.getImage(this.getClass().getResource("resources//play//"+gm.getRound()+".png"));
 			for(int i=0;i<=gm.getLevel();i++) {
 				block[i]=tk.getImage(this.getClass().getResource("resources//play//block"+gm.getLevel()+"_"+gm.getRound()+"_"+i+".png"));
 			}
@@ -169,6 +174,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 		gm_d_right=new ArrayList<Image>();
 		gm_d_left=new ArrayList<Image>();
 		ball=new ArrayList<Image>();
+		gameover=tk.getImage(this.getClass().getResource("resources//play//gameover.png"));
 		gm_d_right.add(tk.getImage(this.getClass().getResource("resources//play//greenman_right1.png")));
 		gm_d_right.add(tk.getImage(this.getClass().getResource("resources//play//greenman_right2.png")));
 		gm_d_right.add(tk.getImage(this.getClass().getResource("resources//play//greenman_right3.png")));

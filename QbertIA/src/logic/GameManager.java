@@ -46,6 +46,10 @@ public class GameManager {
 	public void setBlockVisited(int index) {
 		world.setVisited(index);
 	}
+
+	public void setPreviousBlockVisited(int index) {
+		world.setPreviousVisited(index, level);
+	}
 	
 	public int getNumLevel() {
          return world.getNumLevel();
@@ -370,7 +374,7 @@ public class GameManager {
 	}
 	
 	public void generateBonus() {
-		int greenManProb=-1;
+		int greenManProb=50;
 		for(Player p : position.keySet()) {
 			if(p instanceof GreenMan) { greenManProb=greenManProb-10; }
 			else if (p instanceof GreenBall) { greenManProb=greenManProb+10;}

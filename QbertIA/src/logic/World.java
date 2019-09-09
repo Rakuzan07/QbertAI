@@ -133,6 +133,11 @@ public class World {
     public void setVisited(int index) {
     	blocks[index].visit();
     }
+
+    public void setPreviousVisited(int index, int level) {
+        if(blocks[index].getVisited() + 1 <= level)
+            blocks[index].setVisited(blocks[index].getVisited() + 1);
+    }
     
     public int numVisit(int index) {
     	return blocks[index].getVisited();

@@ -25,7 +25,7 @@ import logic.World;
 
 public class QbertPanel extends JPanel implements KeyListener {
 
-	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , GREEN_BALL_PAUSE = 2, TICK_GENERATE=16 , FALL=12 , LEV_BONUS=2 , NUM_SPRITE=4 , DEATH=12 , DIM_ASSET=16 , ELEVATOR1_X=536 , ELEVATOR1_Y=322 , ELEVATOR2_X=682 , ELEVATOR2_Y=322 , ELEVATOR_OX=610 , ELEVATOR_OY=220;
+	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , GREEN_BALL_PAUSE = 2, TICK_GENERATE=4 , FALL=12 , LEV_BONUS=2 , NUM_SPRITE=4 , DEATH=12 , DIM_ASSET=16 , ELEVATOR1_X=536 , ELEVATOR1_Y=322 , ELEVATOR2_X=682 , ELEVATOR2_Y=322 , ELEVATOR_OX=610 , ELEVATOR_OY=220;
 	private int screenStatus , animationElevator , generator, greenBallCounter;
 	private boolean first=true , start=true, paused = false;
 	private Toolkit tk = Toolkit.getDefaultToolkit();
@@ -541,6 +541,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 						   }
 						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
 							   enemyPosition.put(p, gm.getBlockIndex(p));
+							   if(p instanceof GreenMan)
+							   		gm.setPreviousBlockVisited(gm.getBlockIndex(p));
 							   if (gm.checkBonusCatched(p) && (p instanceof GreenBall || p instanceof GreenMan)) {
 								   if (p instanceof GreenMan) {
 									   gm.setScore(gm.getScore() + 300);
@@ -570,7 +572,9 @@ public class QbertPanel extends JPanel implements KeyListener {
 							   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
 						   }
 						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
-							   enemyPosition.put(p, gm.getBlockIndex(p));
+							   if(p instanceof GreenMan)
+						   			gm.setPreviousBlockVisited(gm.getBlockIndex(p));
+						   		enemyPosition.put(p, gm.getBlockIndex(p));
 							   if (gm.checkBonusCatched(p) && (p instanceof GreenBall || p instanceof GreenMan)) {
 								   if (p instanceof GreenMan) {
 									   gm.setScore(gm.getScore() + 300);
@@ -600,6 +604,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 							   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
 						   }
 						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
+							   if(p instanceof GreenMan)
+						   			gm.setPreviousBlockVisited(gm.getBlockIndex(p));
 							   enemyPosition.put(p, gm.getBlockIndex(p));
 							   if (gm.checkBonusCatched(p) && (p instanceof GreenBall || p instanceof GreenMan)) {
 								   if (p instanceof GreenMan) {
@@ -630,6 +636,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 							   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
 						   }
 						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
+							   if(p instanceof GreenMan)
+						   			gm.setPreviousBlockVisited(gm.getBlockIndex(p));
 							   enemyPosition.put(p, gm.getBlockIndex(p));
 							   if (gm.checkBonusCatched(p) && (p instanceof GreenBall || p instanceof GreenMan)) {
 								   if (p instanceof GreenMan) {

@@ -25,7 +25,7 @@ import logic.World;
 
 public class QbertPanel extends JPanel implements KeyListener {
 
-	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , GREEN_BALL_PAUSE = 2, MIN_TICK_GENERATE=16 , MAX_TICK_GENERATE=40 , FALL=12 , LEV_BONUS=2 , NUM_SPRITE=4 , DEATH=12 , DIM_ASSET=16 , ELEVATOR1_X=536 , ELEVATOR1_Y=322 , ELEVATOR2_X=682 , ELEVATOR2_Y=322 , ELEVATOR_OX=610 , ELEVATOR_OY=220;
+	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , GREEN_BALL_PAUSE = 2, MIN_TICK_GENERATE=16 , MAX_TICK_GENERATE=28 , FALL=12 , LEV_BONUS=2 , NUM_SPRITE=4 , DEATH=12 , DIM_ASSET=16 , ELEVATOR1_X=536 , ELEVATOR1_Y=322 , ELEVATOR2_X=682 , ELEVATOR2_Y=322 , ELEVATOR_OX=610 , ELEVATOR_OY=220;
 	private int screenStatus , animationElevator , generator, greenBallCounter;
 	private boolean first=true , start=true, paused = false;
 	private Toolkit tk = Toolkit.getDefaultToolkit();
@@ -242,6 +242,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 					paused = false;
 			}
 			if(generator==tick) {
+				System.out.println("ENTROATO");
 				Random s=new Random();
 				tick=s.nextInt((MAX_TICK_GENERATE-MIN_TICK_GENERATE)+1)+MIN_TICK_GENERATE;
 				if(gm.getLevel()<LEV_BONUS)gm.generateEnemy();
@@ -259,6 +260,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 					}
 				}
 			}
+
 			if(start) { g.drawImage(getQbertImage(LIFTED_UP),blockPosition.get(initialQbertIndex).getX()+8 , blockPosition.get(initialQbertIndex).getY()-4,this);}
 			else  g.drawImage(getQbertImage(SITTED),blockPosition.get(initialQbertIndex).getX()+8 , blockPosition.get(initialQbertIndex).getY()-4,this);
 			gm.setBlockVisited(initialQbertIndex);
@@ -266,7 +268,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 				gm.putFactsToComputeTargets();
 			    gm.computeBlocksPaths(gm.getQbert(), gm.getFindTarget());
 			}
-			generator=(generator+1)%tick;
+			generator= (generator + 1) % (tick + 1);
 			if(gm.checkQbertDeath()) {
 				death=(death+1)%DEATH;
 				if(death<DEATH-1) {

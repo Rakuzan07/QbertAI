@@ -25,7 +25,7 @@ import logic.World;
 
 public class QbertPanel extends JPanel implements KeyListener {
 
-	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , GREEN_BALL_PAUSE = 2, TICK_GENERATE=4 , FALL=12 , LEV_BONUS=2 , NUM_SPRITE=4 , DEATH=12 , DIM_ASSET=16 , ELEVATOR1_X=536 , ELEVATOR1_Y=322 , ELEVATOR2_X=682 , ELEVATOR2_Y=322 , ELEVATOR_OX=610 , ELEVATOR_OY=220;
+	private static final int DEMO_SCREEN = 0, PLAY_SCREEN = 1 , SITTED=0 , LIFTED_UP=1 , LIMIT_ELEVATOR=4 , GREEN_BALL_PAUSE = 2, MIN_TICK_GENERATE=16 , MAX_TICK_GENERATE=40 , FALL=12 , LEV_BONUS=2 , NUM_SPRITE=4 , DEATH=12 , DIM_ASSET=16 , ELEVATOR1_X=536 , ELEVATOR1_Y=322 , ELEVATOR2_X=682 , ELEVATOR2_Y=322 , ELEVATOR_OX=610 , ELEVATOR_OY=220;
 	private int screenStatus , animationElevator , generator, greenBallCounter;
 	private boolean first=true , start=true, paused = false;
 	private Toolkit tk = Toolkit.getDefaultToolkit();
@@ -36,7 +36,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 	private Image[] block;
 	private ArrayList<Image> d_right , d_left , u_right , u_left , snake_d_right , snake_d_left , snake_u_right , snake_u_left , gm_d_left , gm_d_right ;
 	private GameManager gm;
-	private int initialQbertIndex;
+	private int initialQbertIndex , tick;
 	private HashMap<Player,Integer> enemyPosition;
 	private HashMap<Player , Position> enemyGraphicPosition ;
 	private HashMap<Player , Boolean> fallenEnemy;
@@ -44,7 +44,8 @@ public class QbertPanel extends JPanel implements KeyListener {
     private Position qbertPosition;
     private int el_leftx=ELEVATOR1_X , el_lefty=ELEVATOR1_Y , el_rightx=ELEVATOR2_X , el_righty=ELEVATOR2_Y ,  tox=610 , toy=220;
     private ArrayList<Image> elevator , ball , snakeball , greenBall ;
-	public QbertPanel() {
+	
+    public QbertPanel() {
 		screenStatus = DEMO_SCREEN;
 		demoScreenBackground = tk.getImage(this.getClass().getResource("resources//demo//QbertRebooted.jpg"));
 		d_right=new ArrayList<Image>();
@@ -62,7 +63,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 		Sketcher sk = new Sketcher();
 		new Thread(sk).start();
 		gm.putFactsToComputeTargets();
-
+        Random r=new Random();
+		tick=r.nextInt((MAX_TICK_GENERATE-MIN_TICK_GENERATE)+1)+MIN_TICK_GENERATE;
 	}
 	
 	
@@ -150,8 +152,8 @@ public class QbertPanel extends JPanel implements KeyListener {
 			gm.resetWorld();
 			gm.clearConnectors();
 			block=new Image[gm.getLevel()+1];
-			nround= tk.getImage(this.getClass().getResource("resources//play//"+gm.getLevel()+".png"));
-		    nlevel= tk.getImage(this.getClass().getResource("resources//play//"+gm.getRound()+".png"));
+			nround= tk.getImage(this.getClass().getResource("resources//play//"+gm.getRound()+".png"));
+		    nlevel= tk.getImage(this.getClass().getResource("resources//play//"+gm.getLevel()+".png"));
 			for(int i=0;i<=gm.getLevel();i++) {
 				block[i]=tk.getImage(this.getClass().getResource("resources//play//block"+gm.getLevel()+"_"+gm.getRound()+"_"+i+".png"));
 			}
@@ -239,7 +241,9 @@ public class QbertPanel extends JPanel implements KeyListener {
 				if(greenBallCounter == GREEN_BALL_PAUSE)
 					paused = false;
 			}
-			if(generator==TICK_GENERATE-1) {
+			if(generator==tick) {
+				Random s=new Random();
+				tick=s.nextInt((MAX_TICK_GENERATE-MIN_TICK_GENERATE)+1)+MIN_TICK_GENERATE;
 				if(gm.getLevel()<LEV_BONUS)gm.generateEnemy();
 				else {
 					Random r =new Random();
@@ -262,7 +266,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 				gm.putFactsToComputeTargets();
 			    gm.computeBlocksPaths(gm.getQbert(), gm.getFindTarget());
 			}
-			generator=(generator+1)%TICK_GENERATE;
+			generator=(generator+1)%tick;
 			if(gm.checkQbertDeath()) {
 				death=(death+1)%DEATH;
 				if(death<DEATH-1) {

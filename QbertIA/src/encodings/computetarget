@@ -1,16 +1,19 @@
 isAdjacent(X, 0, Y) :- elevator(X, Y).
 enemyReaches(Y) :- enemy(X), isAdjacent(X, Y, Z).
-inPath(X) :- actualPosition(X).
-inPath(X) | outPath(X) :- inPath(Y), isAdjacent(Y, X, Z).
-:~ inPath(X) , enemy(X) . [1@4, X]
-isTarget(X) | isNotTarget(X) :- inPath(X).
+inPath(X, X) :- actualPosition(X).
+inPath(Y, X) | outPath(Y, X) :- inPath(_, Y), isAdjacent(Y, X, _).
+:~ inPath(_, X), enemy(X) . [1@4, X]
+isTarget(X) | isNotTarget(X) :- inPath(_, X).
 :- #count{X : isTarget(X)} != 1.
 :- isTarget(X), painted(X).
-:~ inPath(X), painted(X). [1@2, X]
-:~ inPath(X). [1@3, X]
+:~ inPath(_, X), painted(X). [1@1, X]
+:~ snake(H), outPath(9, 0). [1@4, H]
+:~ snake(H), outPath(6, 0). [1@4, H]
+:~ snake(H), isPath(X), G = #count{X,G : isAdjacent(X, G)}, G < 3, F = 4 - G. [F@4, X]
+:~ inPath(G, X). [1@2, G, X]
 :- #count{X : positionToTake(X)} != 1.
 :- isTarget(X), actualPosition(X).
-:~ inPath(X), not greenMan(X). [1@1, X]
-:~ inPath(X), not greenBall(X). [1@1, X]
-:~ inPath(X), actualPosition(Y), isAdjacent(Y, X, G), enemyReaches(X). [1@5, X]
-positionToTake(G) :- inPath(X), actualPosition(Y), isAdjacent(Y, X, G).
+:~ inPath(_, X), not greenMan(X). [1@3, X]
+:~ inPath(_, X), not greenBall(X). [1@3, X]
+:~ inPath(Y, X), isAdjacent(Y, X, _), actualPosition(Y), enemyReaches(X). [1@5, X]
+positionToTake(G) :- inPath(Y, X), actualPosition(Y), isAdjacent(Y, X, G).

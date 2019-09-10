@@ -107,37 +107,67 @@ public class GameManager {
 			}
 		} 
 		else if((p instanceof Snake && !((Snake) p).getStatusHatch())) {
-			int blockpos= world.blockIndex(position.get(p));
+			int blockpos = world.blockIndex(position.get(p));
 			int targetPos = world.blockIndex(position.get(qbert));
-			enemyMovement.putFact("actualPosition("+blockpos+").");
-			enemyMovement.putFact("target("+ targetPos +").");
 
-			enemyMovement.putFact("painted(0).");
+			if (targetPos != -1) {
+				enemyMovement.putFact("actualPosition(" + blockpos + ").");
+				enemyMovement.putFact("target(" + targetPos + ").");
+				enemyMovement.putFact("target(" + targetPos + ").");
+				enemyMovement.putFact("painted(0).");
 
-			for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
-				if(world.isVisited(i))enemyMovement.putFact("painted("+i+").");
+				for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
+					if (world.isVisited(i)) enemyMovement.putFact("painted(" + i + ").");
+				}
+
+				for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
+
+					if (world.getBlock(i).getAdiacentDownLeft() != null) {
+						enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownLeft().getId(), "DL"));
+					}
+
+					if (world.getBlock(i).getAdiacentDownRight() != null) {
+						enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownRight().getId(), "DR"));
+					}
+
+					if (world.getBlock(i).getAdiacentUpLeft() != null) {
+						enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpLeft().getId(), "UL"));
+					}
+
+					if (world.getBlock(i).getAdiacentUpRight() != null) {
+						enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpRight().getId(), "UR"));
+					}
+				}
+
+				computeBlocksPaths(p, enemyMovement);
+			} else {
+				if (world.getBlock(blockpos).getAdiacentUpRight() == null){
+					goUpRight(p);
+
+				} else if(world.getBlock(blockpos).getAdiacentUpLeft() == null){
+					goUpLeft(p);
+
+				} else if(world.getBlock(blockpos).getAdiacentDownRight() == null){
+					goDownRight(p);
+
+				} else if(world.getBlock(blockpos).getAdiacentDownLeft() == null) {
+					goDownLeft(p);
+
+				} else {
+					Random r=new Random();
+					int random = r.nextInt(4);
+					switch (random){
+						case 0: goDownLeft(p);
+							break;
+						case 1: goDownRight(p);
+							break;
+						case 2: goUpRight(p);
+							break;
+						case 3: goUpLeft(p);
+							break;
+					}
+				}
 			}
-
-			for (int i = 0; i < world.getIsometricBlockNumber(); i++) {
-
-				if(world.getBlock(i).getAdiacentDownLeft() != null) {
-					enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownLeft().getId(), "DL"));
-				}
-
-				if(world.getBlock(i).getAdiacentDownRight() != null) {
-					enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentDownRight().getId(), "DR"));
-				}
-
-				if(world.getBlock(i).getAdiacentUpLeft() != null) {
-					enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpLeft().getId(), "UL"));
-				}
-
-				if(world.getBlock(i).getAdiacentUpRight() != null) {
-					enemyMovement.putFact(new AdjacentBlocks(i, world.getBlock(i).getAdiacentUpRight().getId(), "UR"));
-				}
-			}
-
-			computeBlocksPaths(p, enemyMovement);
 		}
 		return -1;
 	}
@@ -249,9 +279,13 @@ public class GameManager {
 
 
 		for(Player p: position.keySet())  {
-			if(p!=qbert && (p instanceof Ball || p instanceof Snake)) {
+			if(p!=qbert && p instanceof Ball) {
 				blockpos = world.blockIndex(position.get(p));
 				findTarget.putFact("enemy("+blockpos+").");
+			} else if(p!=qbert && p instanceof Snake && !((Snake) p).getStatusHatch()){
+				blockpos = world.blockIndex(position.get(p));
+				findTarget.putFact("enemy("+blockpos+").");
+				findTarget.putFact("snake("+blockpos+").");
 			} else if(p!=qbert && p instanceof GreenBall){
 				blockpos = world.blockIndex(position.get(p));
 				findTarget.putFact("greenBall("+blockpos+").");
@@ -264,11 +298,13 @@ public class GameManager {
 		findTarget.putFact("painted(0).");
 
 		for (int i = 0; i < World.NUM_ELEVATOR; i++) {
-			int elevatorAdiacent = world.getElevatorAdiacent(i);
-			if(world.getBlock(elevatorAdiacent).getAdiacentUpRight() == null)
-				findTarget.putFact("elevator(" + elevatorAdiacent + ", UR).");
-			else
-				findTarget.putFact("elevator(" + elevatorAdiacent + ", UL).");
+			if(!isElevatorVisited(i)) {
+				int elevatorAdiacent = world.getElevatorAdiacent(i);
+				if (world.getBlock(elevatorAdiacent).getAdiacentUpRight() == null)
+					findTarget.putFact("elevator(" + elevatorAdiacent + ", UR).");
+				else
+					findTarget.putFact("elevator(" + elevatorAdiacent + ", UL).");
+			}
 		}
 
 		for (int i = 0; i < world.getIsometricBlockNumber(); i++) {

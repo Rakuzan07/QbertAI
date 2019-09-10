@@ -551,7 +551,10 @@ public class QbertPanel extends JPanel implements KeyListener {
 						   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
 							   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
 						   }
-						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
+						   if(blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 16 == ePosition.getY() && p instanceof Snake && !((Snake)p).getStatusHatch()) {
+							   enemyPosition.put(p, gm.getBlockIndex(p));
+						   }
+						   else if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
 							   enemyPosition.put(p, gm.getBlockIndex(p));
 							   if(p instanceof GreenMan)
 							   		gm.setPreviousBlockVisited(gm.getBlockIndex(p));
@@ -583,7 +586,10 @@ public class QbertPanel extends JPanel implements KeyListener {
 						   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
 							   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
 						   }
-						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
+						   if(blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 16 == ePosition.getY() && p instanceof Snake && !((Snake)p).getStatusHatch()) {
+							   enemyPosition.put(p, gm.getBlockIndex(p));
+						   }
+						   else if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
 							   if(p instanceof GreenMan)
 						   			gm.setPreviousBlockVisited(gm.getBlockIndex(p));
 						   		enemyPosition.put(p, gm.getBlockIndex(p));
@@ -616,7 +622,10 @@ public class QbertPanel extends JPanel implements KeyListener {
 						   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
 							   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
 						   }
-						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
+						   if(blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 16 == ePosition.getY() && p instanceof Snake && !((Snake)p).getStatusHatch()) {
+							   enemyPosition.put(p, gm.getBlockIndex(p));
+						   }
+						   else if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
 							   if(p instanceof GreenMan)
 						   			gm.setPreviousBlockVisited(gm.getBlockIndex(p));
 							   enemyPosition.put(p, gm.getBlockIndex(p));
@@ -649,7 +658,10 @@ public class QbertPanel extends JPanel implements KeyListener {
 						   } else if (p instanceof Snake && !((Snake) p).getStatusHatch()) {
 							   g.drawImage(getSnakeImage(p, LIFTED_UP), ePosition.getX() - 1, ePosition.getY() - 1, this);
 						   }
-						   if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
+						   if(blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 16 == ePosition.getY() && p instanceof Snake && !((Snake)p).getStatusHatch()) {
+							   enemyPosition.put(p, gm.getBlockIndex(p));
+						   }
+						   else if (blockPosition.get(gm.getBlockIndex(p)).getX() + 8 == ePosition.getX() && blockPosition.get(gm.getBlockIndex(p)).getY() - 4 == ePosition.getY()) {
 							   if(p instanceof GreenMan)
 						   			gm.setPreviousBlockVisited(gm.getBlockIndex(p));
 							   enemyPosition.put(p, gm.getBlockIndex(p));
@@ -664,6 +676,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 								   gm.removePlayer(p);
 							   }
 						   }
+						   
 					   }
 				   }
 			   }

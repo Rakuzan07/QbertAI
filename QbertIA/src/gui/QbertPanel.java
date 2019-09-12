@@ -243,7 +243,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 			}
 			if(generator==tick) {
 				Random s=new Random();
-				tick=s.nextInt((MAX_TICK_GENERATE-MIN_TICK_GENERATE)+1)+MIN_TICK_GENERATE;
+				tick=s.nextInt((MAX_TICK_GENERATE-gm.getLevel()-MIN_TICK_GENERATE)+1)+(MIN_TICK_GENERATE/gm.getLevel()+gm.getLevel());
 				if(gm.getLevel()<LEV_BONUS)gm.generateEnemy();
 				else {
 					Random r =new Random();

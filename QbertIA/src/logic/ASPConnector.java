@@ -28,6 +28,7 @@ public class ASPConnector {
     }
 
     public void clear(){
+        handler.removeAll();
         facts.clearAll();
     }
 

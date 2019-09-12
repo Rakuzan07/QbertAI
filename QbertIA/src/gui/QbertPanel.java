@@ -147,6 +147,7 @@ public class QbertPanel extends JPanel implements KeyListener {
     
 	public void loadWorld() {
 		if(gm.worldCompleted()) {
+			tick = 0;
 			gm.clearPosition();
 			gm.upgrade();
 			gm.resetWorld();
@@ -275,6 +276,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 					
 				}
 				else{
+					tick = 0;
 					gm.clearPosition();
 					gm.clearConnectors();
 					gm.decrLife();

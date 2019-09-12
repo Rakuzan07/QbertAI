@@ -276,22 +276,32 @@ public class GameManager {
 
 		int blockpos= world.blockIndex(position.get(qbert));
 		findTarget.putFact("actualPosition("+blockpos+").");
+		System.out.println("actualPosition("+blockpos+").");
 
 
 		for(Player p: position.keySet())  {
 			if(p!=qbert && p instanceof Ball) {
 				blockpos = world.blockIndex(position.get(p));
 				findTarget.putFact("enemy("+blockpos+").");
+				System.out.println("enemy("+blockpos+").");
 			} else if(p!=qbert && p instanceof Snake && !((Snake) p).getStatusHatch()){
 				blockpos = world.blockIndex(position.get(p));
 				findTarget.putFact("enemy("+blockpos+").");
 				findTarget.putFact("snake("+blockpos+").");
+				System.out.println("enemy("+blockpos+").");
+				System.out.println("snake("+blockpos+").");
+			} else if(p!=qbert && p instanceof Snake){
+				blockpos = world.blockIndex(position.get(p));
+				findTarget.putFact("enemy("+blockpos+").");
+				System.out.println("enemy("+blockpos+").");
 			} else if(p!=qbert && p instanceof GreenBall){
 				blockpos = world.blockIndex(position.get(p));
 				findTarget.putFact("greenBall("+blockpos+").");
+				System.out.println("greenBall("+blockpos+").");
 			} else if(p!=qbert && p instanceof GreenMan){
 				blockpos = world.blockIndex(position.get(p));
 				findTarget.putFact("greenMan("+blockpos+").");
+				System.out.println("greenMan("+blockpos+").");
 			}
 		}
 

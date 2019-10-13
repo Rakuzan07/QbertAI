@@ -272,7 +272,7 @@ public class QbertPanel extends JPanel implements KeyListener {
 			if(gm.checkQbertDeath()) {
 				death=(death+1)%DEATH;
 				if(death<DEATH-1) {
-					g.drawImage(deathImage,qbertPosition.getX()+DIM_ASSET, qbertPosition.getY(), this);
+					g.drawImage(deathImage,qbertPosition.getX() - DIM_ASSET, qbertPosition.getY() - (DIM_ASSET * 2), this);
 					
 				}
 				else{

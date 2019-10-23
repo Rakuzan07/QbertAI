@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -20,7 +21,7 @@ private static final int HEIGHT = 796, WIDTH = 1334;
 		this.setTitle("Q*berAI");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		try {
-			this.setIconImage(ImageIO.read(this.getClass().getResource("resources//icon//icon.png")));
+			this.setIconImage(ImageIO.read(this.getClass().getResource("resources"+File.separator+"icon"+File.separator+"icon.png")));
 		} catch (IOException e) {}
 		qbertPanel=new QbertPanel();
 		this.setContentPane(qbertPanel);

@@ -34,10 +34,8 @@ public class GameManager {
 		position.put(qbert, world.getBlock(0));
 		level=1;
 		round=1;
-		findTarget = new ASPConnector("QbertIA" + File.separator + "src" + File.separator +
-				"encodings" + File.separator + "computetarget");
-		enemyMovement = new ASPConnector("QbertIA" + File.separator + "src" + File.separator +
-				"encodings" + File.separator + "enemyIA");
+		findTarget = new ASPConnector("encodings" + File.separator + "computetarget");
+		enemyMovement = new ASPConnector("encodings" + File.separator + "enemyIA");
 		world.setElevatorAdiacent(0, 6);
 		world.setElevatorAdiacent(1, 9);
 		setBlockVisited(0);

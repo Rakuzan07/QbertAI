@@ -20,8 +20,7 @@ public class ASPConnector {
 
     public ASPConnector(String path){
         logicProgramPath = path;
-        handler = new DesktopHandler(new DLV2DesktopService("QbertIA" + File.separator + "src" +
-                File.separator + "libs" + File.separator + "dlv2"));
+        handler = new DesktopHandler(new DLV2DesktopService("libs" + File.separator + "dlv2"));
         facts = new ASPInputProgram();
         logicProgram = new ASPInputProgram();
         logicProgram.addFilesPath(logicProgramPath);
